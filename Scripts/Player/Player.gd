@@ -18,9 +18,8 @@ func _physics_process(delta: float) -> void:
 	move_inputs *= moveSpeed * delta
 
 	if move_inputs != Vector2.ZERO:
-		global_position += Vector3(move_inputs.x, 0.0, move_inputs.y)
-		var look_direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()
-		look_at(global_position - look_direction, Vector3.UP)
+		var direction = Vector3(move_inputs.x, 0.0, move_inputs.y)
+		global_position += direction
 		
 	rotation_degrees.x = 0
 	rotation_degrees.z = 0

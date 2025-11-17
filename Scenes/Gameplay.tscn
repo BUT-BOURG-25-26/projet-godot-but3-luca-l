@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=7 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
 [ext_resource type="Material" uid="uid://dlsrkaxhigpt" path="res://Materials/BlueMat.tres" id="2_r5ka5"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -30,3 +31,9 @@ transform = Transform3D(1, 0, 0, 0, 0.952279, 0.30523, 0, -0.30523, 0.952279, 0,
 
 [node name="Player" parent="." instance=ExtResource("1_yijg0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+
+[node name="Virtual Joystick" parent="." instance=ExtResource("3_tdndw")]
+action_left = "Left"
+action_right = "Right"
+action_up = "Up"
+action_down = "Down"

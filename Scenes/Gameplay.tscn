@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=8 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
 [ext_resource type="Material" uid="uid://dlsrkaxhigpt" path="res://Materials/BlueMat.tres" id="2_r5ka5"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
+[ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -26,7 +27,7 @@ environment = SubResource("Environment_yijg0")
 material_override = ExtResource("2_r5ka5")
 size = Vector3(50, 0.1, 50)
 
-[node name="Player" parent="." instance=ExtResource("1_yijg0")]
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("1_yijg0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
 [node name="Virtual Joystick" parent="." instance=ExtResource("3_tdndw")]
@@ -34,3 +35,7 @@ action_left = "Left"
 action_right = "Right"
 action_up = "Up"
 action_down = "Down"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.708352, 0.705859, 0, -0.705859, 0.708352, 0.8, 6, 6.7)
+script = ExtResource("4_ovofm")

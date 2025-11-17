@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgpudbj6ienek"]
+
+[ext_resource type="Script" uid="uid://2fqlmtg75ik1" path="res://Scripts/Attack/MeleeAttack.gd" id="1_3odqg"]
+[ext_resource type="Material" uid="uid://dlcm2kkbx1qmo" path="res://Materials/orange.tres" id="2_s663j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y6qyf"]
+size = Vector3(2.28813, 0.269775, 4.1626)
+
+[node name="MeleeAttack" type="Area3D"]
+script = ExtResource("1_3odqg")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+material_override = ExtResource("2_s663j")
+size = Vector3(2.29023, 0.265625, 4.14148)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+shape = SubResource("BoxShape3D_y6qyf")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="Lifetime" type="Timer" parent="Timers"]

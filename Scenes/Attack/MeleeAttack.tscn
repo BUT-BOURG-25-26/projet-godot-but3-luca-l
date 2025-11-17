@@ -7,6 +7,8 @@
 size = Vector3(2.28813, 0.269775, 4.1626)
 
 [node name="MeleeAttack" type="Area3D"]
+collision_layer = 8
+collision_mask = 2
 script = ExtResource("1_3odqg")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]

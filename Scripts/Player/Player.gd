@@ -28,7 +28,15 @@ var dammage = 1
 func _ready() -> void:
 	meleeAttackTimer.start(meleeAttackInterval)
 	meleeAttackTimer.timeout.connect(meleeAttack)
-	
+
+func TakeDammage(dammage: int) -> void:
+	if currentPv - dammage > 0:
+		currentPv -= dammage
+	else:
+		currentPv = 0
+	print("player : " + str(currentPv))
+	return
+
 func meleeAttack() -> void:
 	var meleeAttack = meleeAttackScene.instantiate()
 	var attack_distance: float = 1.17

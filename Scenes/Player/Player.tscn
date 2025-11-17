@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c24rnkrg4u6xp"]
+[gd_scene load_steps=3 format=3 uid="uid://c24rnkrg4u6xp"]
+
+[ext_resource type="Script" uid="uid://duny4n8ky233x" path="res://Scripts/Player/Player.gd" id="1_s0eop"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l3ax4"]
 radius = 0.545998
@@ -6,6 +8,7 @@ height = 2.48937
 
 [node name="Player" type="CharacterBody3D"]
 collision_mask = 13
+script = ExtResource("1_s0eop")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
 

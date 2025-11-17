@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu4lwae71tdkv"]
+
+[ext_resource type="Script" uid="uid://erl7xv250xsf" path="res://Scripts/Enemy/MeleeEnemy.gd" id="1_hbcc1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eoseg"]
+height = 1.53287
+
+[node name="MeleeEnemy" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 11
+script = ExtResource("1_hbcc1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_eoseg")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="MeleAttackTimer" type="Timer" parent="Timers"]

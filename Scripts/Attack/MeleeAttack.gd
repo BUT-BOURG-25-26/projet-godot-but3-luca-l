@@ -1,7 +1,7 @@
 class_name MeleeAttack
 extends Area3D
 
-var dammage = 5
+@export var dammage = 5
 @export var lifeDuration: float = 0.5
 @onready var lifeTimeTimer:Timer = $Timers/Lifetime
 
@@ -13,7 +13,7 @@ func DetectCollision() -> void:
 	var overlapping_bodies = get_overlapping_bodies()
 	for body in overlapping_bodies:
 		if body is Enemy:
-			body.takeDammage(dammage)
+			body.TakeDammage(dammage)
 	
 func Destroy() -> void:
 	DetectCollision()

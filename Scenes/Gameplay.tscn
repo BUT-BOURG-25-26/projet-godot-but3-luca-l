@@ -16,9 +16,6 @@ tonemap_mode = 2
 
 [node name="GameplayScene" type="Node3D"]
 
-[node name="Player" parent="." instance=ExtResource("1_yijg0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-
 [node name="Map" type="Node3D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
@@ -29,4 +26,7 @@ material_override = ExtResource("2_r5ka5")
 size = Vector3(50, 0.1, 50)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.952279, 0.30523, 0, -0.30523, 0.952279, 0, 3.07468, 8.43848)
+transform = Transform3D(1, 0, 0, 0, 0.952279, 0.30523, 0, -0.30523, 0.952279, 0, 3.07468, 4.59281)
+
+[node name="Player" parent="." instance=ExtResource("1_yijg0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)

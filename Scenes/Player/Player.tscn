@@ -1,11 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://c24rnkrg4u6xp"]
+[gd_scene load_steps=8 format=3 uid="uid://c24rnkrg4u6xp"]
 
 [ext_resource type="Script" uid="uid://duny4n8ky233x" path="res://Scripts/Player/Player.gd" id="1_s0eop"]
 [ext_resource type="PackedScene" uid="uid://cgpudbj6ienek" path="res://Scenes/Attack/MeleeAttack.tscn" id="2_ft8w5"]
+[ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="3_h54ih"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l3ax4"]
 radius = 0.545998
 height = 2.48937
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ude3g"]
+viewport_path = NodePath("HealthBarSprite/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ft8w5"]
+bg_color = Color(0.737255, 1, 0.819608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h54ih"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0.654902, 0.317647, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -25,3 +56,30 @@ shape = SubResource("CapsuleShape3D_l3ax4")
 [node name="MeleAttackTimer" type="Timer" parent="Timers"]
 
 [node name="RangeAttackTimer" type="Timer" parent="Timers"]
+
+[node name="HealthBarSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61223, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_ude3g")
+
+[node name="SubViewport" type="SubViewport" parent="HealthBarSprite"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(100, 25)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="HealthBarSprite/SubViewport"]
+
+[node name="HealthBar" type="ProgressBar" parent="HealthBarSprite/SubViewport/CanvasLayer" groups=["HealthBar"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_ft8w5")
+theme_override_styles/fill = SubResource("StyleBoxFlat_h54ih")
+show_percentage = false
+script = ExtResource("3_h54ih")

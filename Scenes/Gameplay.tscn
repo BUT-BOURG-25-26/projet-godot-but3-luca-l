@@ -49,7 +49,7 @@ transform = Transform3D(1, 0, 0, 0, 0.708352, 0.705859, 0, -0.705859, 0.708352, 
 script = ExtResource("4_ovofm")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_yijg0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08191, 0)
 
 [node name="MeleeEnemy" parent="." instance=ExtResource("5_mofsa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6256, -9.59605)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9354, -8.06655)

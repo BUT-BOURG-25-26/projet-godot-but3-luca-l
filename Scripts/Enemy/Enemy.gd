@@ -7,7 +7,7 @@ var currentLevel = 1
 @export var dammage = 1
 
 # Health
-@export var maxPv: int = 10
+@export var maxPv: int = 1
 @export var currentPv: int = maxPv
 
 # Movement 
@@ -20,6 +20,3 @@ func TakeDammage(dammage: int) -> void:
 		queue_free()
 	print("Enemy : " + str(currentPv))
 	return
-
-func _ready() -> void:
-	player = get_tree().get_first_node_in_group("Player") as Player

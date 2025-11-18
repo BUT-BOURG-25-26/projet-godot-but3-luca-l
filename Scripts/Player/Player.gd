@@ -49,6 +49,9 @@ func _physics_process(delta: float) -> void:
 	read_move_inputs()
 	move_inputs *= moveSpeed * delta
 	
+	if !is_on_floor():
+			velocity.y = get_gravity().y
+	
 	if move_inputs != Vector2.ZERO:
 		global_position += Vector3(move_inputs.x, 0.0, move_inputs.y)
 		var look_direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()

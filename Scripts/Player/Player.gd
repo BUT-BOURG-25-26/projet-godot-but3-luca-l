@@ -1,13 +1,17 @@
 class_name Player
 extends CharacterBody3D
 
+# UI
+var healthbar: ProgressBar
+
+
 # Gameplay
 var move_inputs: Vector2
 var currentLevel = 1
 var dammage = 1
 
 # Health
-@export var maxPv: int = 50
+@export var maxPv: int = 5
 @export var currentPv: int = maxPv
 
 # Movement 
@@ -28,12 +32,17 @@ var dammage = 1
 func _ready() -> void:
 	meleeAttackTimer.start(meleeAttackInterval)
 	meleeAttackTimer.timeout.connect(meleeAttack)
+	healthbar = get_tree().get_first_node_in_group("HealthBar")
+	healthbar.max_value = maxPv
+	healthbar.update(currentPv)
 
 func TakeDammage(dammage: int) -> void:
 	if currentPv - dammage > 0:
 		currentPv -= dammage
+		healthbar.update(currentPv)
 	else:
 		currentPv = 0
+		healthbar.update(currentPv)
 	print("player : " + str(currentPv))
 	return
 

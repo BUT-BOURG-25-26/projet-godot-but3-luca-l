@@ -10,12 +10,9 @@ func _ready() -> void:
 	lifeTimeTimer.timeout.connect(Destroy)
 	
 func DetectCollision() -> void:
-	print("collision")
 	var overlapping_bodies = get_overlapping_bodies()
-	print(overlapping_bodies)
 	for body in overlapping_bodies:
 		if body is Enemy:
-			print("touch enemy")
 			body.TakeDammage(dammage)
 	
 func Destroy() -> void:

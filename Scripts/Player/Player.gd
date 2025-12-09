@@ -32,6 +32,10 @@ var dammage = 1
 func _ready() -> void:
 	meleeAttackTimer.start(meleeAttackInterval)
 	meleeAttackTimer.timeout.connect(meleeAttack)
+	
+	rangeAttackTimer.start(rangeAttackInterval)
+	rangeAttackTimer.timeout.connect(rangeAttack)
+	
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
 	healthbar.max_value = maxPv
 	healthbar.update(currentPv)
@@ -53,6 +57,13 @@ func meleeAttack() -> void:
 	meleeAttack.position = local_offset
 	meleeAttack.rotation = Vector3.ZERO
 	add_child(meleeAttack)
+
+func rangeAttack() -> void:
+	var rangeAttack = rangeAttackScene.instantiate()
+	get_parent().add_child(rangeAttack)
+	rangeAttack.global_position = global_position
+	rangeAttack.global_rotation = global_rotation
+	rangeAttack.InitTargetToAttack()
 	
 func _physics_process(delta: float) -> void:
 	read_move_inputs()

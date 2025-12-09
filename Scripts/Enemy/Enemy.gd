@@ -7,7 +7,7 @@ var currentLevel = 1
 @export var dammage = 1
 
 # Health
-@export var maxPv: int = 1
+@export var maxPv: int = 10
 @export var currentPv: int = maxPv
 
 # Movement 

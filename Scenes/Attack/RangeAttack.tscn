@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1p4ond8xy135"]
+
+[ext_resource type="Script" uid="uid://dxpwv4w3jpsil" path="res://Scripts/Attack/RangeAttack.gd" id="1_t37vp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t37vp"]
+
+[node name="RangeAttack" type="Area3D"]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("1_t37vp")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_t37vp")

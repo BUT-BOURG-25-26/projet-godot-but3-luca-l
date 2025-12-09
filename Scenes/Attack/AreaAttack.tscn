@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://c62pa05tgyhkd"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_h8gdd"]
+height = 0.203613
+radius = 1.06982
+
+[node name="AreaAttack" type="Area3D"]
+collision_layer = 8
+collision_mask = 5
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00952148, 0)
+shape = SubResource("CylinderShape3D_h8gdd")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="AttackTimer" type="Timer" parent="Timers"]

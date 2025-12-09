@@ -10,6 +10,7 @@ var move_inputs: Vector2
 var currentLevel = 1
 var dammage = 1
 
+
 # Health
 @export var maxPv: int = 5
 @export var currentPv: int = maxPv
@@ -27,7 +28,7 @@ var dammage = 1
 # Attack Scenes
 @export var meleeAttackScene: PackedScene
 @export var rangeAttackScene: PackedScene
-@export var zoneAttackScene: PackedScene
+@export var areaAttackScene: PackedScene
 
 func _ready() -> void:
 	meleeAttackTimer.start(meleeAttackInterval)
@@ -35,6 +36,8 @@ func _ready() -> void:
 	
 	rangeAttackTimer.start(rangeAttackInterval)
 	rangeAttackTimer.timeout.connect(rangeAttack)
+	
+	areaAttack()
 	
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
 	healthbar.max_value = maxPv
@@ -64,6 +67,11 @@ func rangeAttack() -> void:
 	rangeAttack.global_position = global_position
 	rangeAttack.global_rotation = global_rotation
 	rangeAttack.InitTargetToAttack()
+
+func areaAttack() -> void:
+	var areaAttack = areaAttackScene.instantiate()
+	add_child(areaAttack)
+	
 	
 func _physics_process(delta: float) -> void:
 	read_move_inputs()

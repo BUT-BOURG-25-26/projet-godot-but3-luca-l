@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4orrak2hn07y"]
+
+[ext_resource type="Script" uid="uid://bqe4hjktshgpp" path="res://Scripts/Manager/EnnemySpawner.gd" id="1_f4yts"]
+[ext_resource type="PackedScene" uid="uid://cu4lwae71tdkv" path="res://Scenes/Enemy/MeleeEnemy.tscn" id="2_26alg"]
+
+[node name="EnnemySpawner" type="Node3D"]
+script = ExtResource("1_f4yts")
+meleeEnemy = ExtResource("2_26alg")
+RangeEnemy = ExtResource("2_26alg")
+BossEnemy = ExtResource("2_26alg")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="MeleeSpawnTimer" type="Timer" parent="Timers"]
+
+[node name="RangeSpawnTimer" type="Timer" parent="Timers"]
+
+[node name="BossSpawnTimer" type="Timer" parent="Timers"]

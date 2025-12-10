@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://dmjbg6r7aoiuu"]
 
+[ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
 [ext_resource type="Material" uid="uid://dlsrkaxhigpt" path="res://Materials/BlueMat.tres" id="2_r5ka5"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
-[ext_resource type="PackedScene" uid="uid://cu4lwae71tdkv" path="res://Scenes/Enemy/MeleeEnemy.tscn" id="5_mofsa"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -22,6 +22,8 @@ tonemap_mode = 2
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ovofm"]
 
 [node name="GameplayScene" type="Node3D"]
+
+[node name="EnnemySpawner" parent="." instance=ExtResource("1_u8j7u")]
 
 [node name="Map" type="Node3D" parent="."]
 
@@ -50,6 +52,3 @@ script = ExtResource("4_ovofm")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_yijg0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08191, 0)
-
-[node name="MeleeEnemy" parent="." groups=["Enemy"] instance=ExtResource("5_mofsa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.65216, 1.9354, -8.06655)

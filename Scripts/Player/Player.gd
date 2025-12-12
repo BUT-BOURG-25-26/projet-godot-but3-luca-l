@@ -7,7 +7,6 @@ var healthbar: ProgressBar
 
 # Gameplay
 var move_inputs: Vector2
-var currentLevel = 1
 var dammage = 1
 
 
@@ -50,7 +49,6 @@ func TakeDammage(dammage: int) -> void:
 	else:
 		currentPv = 0
 		healthbar.update(currentPv)
-	print("player : " + str(currentPv))
 	return
 
 func meleeAttack() -> void:

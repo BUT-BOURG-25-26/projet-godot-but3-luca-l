@@ -1,7 +1,8 @@
+class_name EnemySpawner
 extends Node3D
 
 # IMPORTANT : Mettre le spawnLimit dans GameManager plus tard
-@export var spawnLimit: int = 10
+var spawnLimit: int = GameDifficulty.enemyCurrentSpawnLimit
 var currentEnemyNumber: int = 0
 
 #Timers
@@ -31,9 +32,11 @@ func _ready() -> void:
 
 func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	if currentEnemyNumber >= spawnLimit:
+		GameManager.EndOfLevel()
 		return
 	currentEnemyNumber += 1
 	var enemy = ennemyToSpawn.instantiate()
+	enemy.add_to_group("Enemy")
 	add_child(enemy)
 	SpawnPosition(enemy)
 

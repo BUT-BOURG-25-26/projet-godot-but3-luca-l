@@ -23,7 +23,7 @@ tonemap_mode = 2
 
 [node name="GameplayScene" type="Node3D"]
 
-[node name="EnnemySpawner" parent="." instance=ExtResource("1_u8j7u")]
+[node name="EnnemySpawner" parent="." groups=["EnemySpawner"] instance=ExtResource("1_u8j7u")]
 
 [node name="Map" type="Node3D" parent="."]
 

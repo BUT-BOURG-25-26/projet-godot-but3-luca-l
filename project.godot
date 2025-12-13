@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 GameManager="*res://Scripts/Manager/GameManager.gd"
 UiManager="*res://Scripts/Manager/UiManager.gd"
 GameDifficulty="*res://Scripts/Manager/GameDifficulty.gd"
+PlayerStatManager="*res://Scripts/Manager/PlayerStatManager.gd"
 
 [editor_plugins]
 

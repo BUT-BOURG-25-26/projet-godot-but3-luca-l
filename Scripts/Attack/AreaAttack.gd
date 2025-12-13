@@ -1,12 +1,12 @@
 class_name AreaAttack
 extends Area3D
 
-@export var damageTiming: float = 1.5
+var attackInterval: float
 @onready var attackTimer:Timer = $Timers/AttackTimer
-@export var damage = 1
+var damage: float
 
 func _ready() -> void:
-	attackTimer.start(damageTiming)
+	attackTimer.start(attackInterval)
 	attackTimer.timeout.connect(DetectCollision)
 
 func DetectCollision() -> void:

@@ -1,28 +1,29 @@
 extends Node
+# IMPORTANT : REMPLACER ENSUITE PAR POURCENTAGE
 
-# LIMIT
+# _______________LIMIT_______________
 var enemyMaxSpawnLimit = 120
 
-var meleeMinAttackTiming: float = 0.75
+var meleeMinAttackTiming: float = 0.5
 var meleeMaxHealth = 25
 var meleeMaxMovementSpeed: float = 15
-var meleeMaxDammage: int = 10
+var meleeMaxDammage: int
 
 var rangeMaxHealth = 20
 var rangeMaxMovementSpeed: float = 10
 var rangeMinAttackTiming: int = 0.5
-var rangeMaxDammage: int = 5
+var rangeMaxDammage: int
 
 var bossMaxHealth = 30
 var bossMaxMovementSpeed: float = 15
 var bossMinAttackTiming: int = 0.5
-var bossMaxDammage: int = 20
+var bossMaxDammage: int
 
-# Current stats
+# _______________Current stats_______________
 var enemyCurrentSpawnLimit = 2
 
 var meleeCurrentAttackTiming = 1.5
-var meleeCurrentHealth = 3
+var meleeCurrentHealth = 1
 var meleeCurrentMovementSpeed: float = 3
 var meleeCurrentDammage: int = 1
 
@@ -36,9 +37,17 @@ var bossCurrentMovementSpeed: float = 5
 var bossCurrentAttackTiming: int = 1.5
 var bossCurrentDammage: int = 1
 
+func UpdateMaxStats():
+	meleeMaxDammage = PlayerStatManager.playerMaxHealth * 0.25
+	rangeMaxDammage = PlayerStatManager.playerMaxHealth * 0.25
+	bossMaxDammage = PlayerStatManager.playerMaxHealth * 0.5
+
+func UpdateCurrentStats():
+	return
+
 func IncreaseDifficulty(newLevel: int):
 	if newLevel %2 == 0:
-		IncreaseMeleeEnemyStats()
+		IncreaseMeleeEnemyStats(newLevel)
 		IncreaseRangeEnemyStats()
 	elif newLevel %5 == 0:
 		IncreaseBossEnemyStats()
@@ -51,7 +60,7 @@ func IncreaseSpawnLimit():
 	print("new limit : " , enemyCurrentSpawnLimit)
 	return
 
-func IncreaseMeleeEnemyStats():
+func IncreaseMeleeEnemyStats(newLevel: int):
 	var randomValue = randi_range(0,3)
 	if(randomValue == 0):
 		meleeCurrentHealth += 2

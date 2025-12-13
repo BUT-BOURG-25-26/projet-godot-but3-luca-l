@@ -3,7 +3,7 @@ extends Area3D
 
 @export var lifeDuration: float = 0.5
 @onready var lifeTimeTimer:Timer = $Timers/Lifetime
-@export var damage = 3
+var damage: float
 
 func _ready() -> void:
 	lifeTimeTimer.start(lifeDuration)

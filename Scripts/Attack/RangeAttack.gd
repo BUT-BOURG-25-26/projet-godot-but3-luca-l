@@ -1,9 +1,9 @@
 class_name RangeAttack
 extends Area3D
 
-@export var speed: float = 20.0
+var speed: float = 20.0
 var direction: Vector3 = Vector3.FORWARD
-@export var damage = 1
+var damage: float
 
 func _ready():
 	body_entered.connect(_on_body_entered)

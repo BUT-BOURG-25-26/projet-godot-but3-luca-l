@@ -8,9 +8,9 @@ var healthbar: ProgressBar
 var player: Player
 
 # Stats
-var maxPv: int
-var currentPv: int
-var damage
+var maxPv: float
+var currentPv: float
+var damage: float
 var moveSpeed: float
 
 func InitHealthBar() -> void:
@@ -18,7 +18,7 @@ func InitHealthBar() -> void:
 	healthbar.max_value = maxPv
 	healthbar.update(currentPv)
 
-func TakeDammage(damageTaken: int) -> void:
+func TakeDammage(damageTaken: float) -> void:
 	if currentPv - damageTaken > 0:
 		currentPv -= damageTaken
 		healthbar.update(currentPv)

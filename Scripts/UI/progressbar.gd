@@ -1,6 +1,6 @@
 extends ProgressBar
 
-func update(newValue: int):
+func update(newValue: float):
 	value = newValue
 	
 func barAnimation (animationPath) -> void:

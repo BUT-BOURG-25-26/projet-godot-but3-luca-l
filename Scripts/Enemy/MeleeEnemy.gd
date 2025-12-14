@@ -6,19 +6,20 @@ var meleeAttackInterval: float
 @onready var meleeAttackTimer:Timer = $Timers/MeleAttackTimer
 
 func _ready() -> void:
+	healthbar = $HealthBarSprite/SubViewport/CanvasLayer/HealthBar
 	player = get_tree().get_first_node_in_group("Player") as Player
 	InitStat()
-	InitHealthBar()
+	UpdateHealthBar()
 	meleeAttackTimer.start(meleeAttackInterval)
 	meleeAttackTimer.timeout.connect(Attack)
 
 func InitStat():
-	maxPv = GameDifficulty.meleeCurrentDammage
+	maxPv = GameDifficulty.meleeCurrentHealth
 	currentPv = maxPv
 	moveSpeed = GameDifficulty.meleeCurrentMovementSpeed
 	damage = GameDifficulty.meleeCurrentDammage
 	meleeAttackInterval = GameDifficulty.meleeCurrentAttackTiming
-	print("currentPv: ", currentPv, " moveSpeed: ", moveSpeed, " damage: ", damage, " attackTiming:", meleeAttackInterval)
+	UpdateHealthBar()
 
 func Attack()->void:
 	for i in range(get_slide_collision_count()):

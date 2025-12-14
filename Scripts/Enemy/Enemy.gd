@@ -13,8 +13,7 @@ var currentPv: float
 var damage: float
 var moveSpeed: float
 
-func InitHealthBar() -> void:
-	healthbar = $HealthBarSprite/SubViewport/CanvasLayer/HealthBar
+func UpdateHealthBar() -> void:
 	healthbar.max_value = maxPv
 	healthbar.update(currentPv)
 
@@ -28,5 +27,5 @@ func TakeDammage(damageTaken: float) -> void:
 
 # Overide a chaque type d'enemy
 func InitStat():
-	maxPv = GameDifficulty.meleeCurrentDammage
+	maxPv = 1.0
 	currentPv = maxPv

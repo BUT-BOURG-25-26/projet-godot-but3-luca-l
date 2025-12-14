@@ -32,23 +32,35 @@ var areaAttack: Node3D
 @export var areaAttackScene: PackedScene
 
 func _ready() -> void:
-	InitStats()
+	healthbar = get_tree().get_first_node_in_group("HealthBar")
+	
+	UpdateStats()
+	PlayerStatManager.signalStatsUpdated.connect(UpdateStats)
 	SetAttackIntervals()
+	
 	meleeAttackTimer.start()
 	meleeAttackTimer.timeout.connect(meleeAttack)
-	
+
+func ActivateRangeAttack():
 	rangeAttackTimer.start()
 	rangeAttackTimer.timeout.connect(rangeAttack)
-	
-	AreaAttack()
-	
-	healthbar = get_tree().get_first_node_in_group("HealthBar")
+
+func ActivateAreaAttack() -> void:
+	if areaAttack:
+		return 
+	areaAttack = areaAttackScene.instantiate()
+	areaAttack.damage = areaDamage
+	add_child(areaAttack)
+	SetAttackIntervals()
+
+func UpdateHealthBar():
 	healthbar.max_value = maxPv
 	healthbar.update(currentPv)
-	
-func InitStats():
+
+func UpdateStats():
 	maxPv = PlayerStatManager.currentHealth
 	currentPv = maxPv
+	UpdateHealthBar()
 	
 	meleeDamage = PlayerStatManager.currentMeleeDammage
 	rangeDamage = PlayerStatManager.currentRangeDammage
@@ -58,15 +70,28 @@ func InitStats():
 	rangeAttackInterval = PlayerStatManager.currentRangeAttackInterval
 	if areaAttack:
 		areaAttackInterval = PlayerStatManager.currentAreaAttackInterval
+	SetAttackIntervals()
 	
 	moveSpeed = PlayerStatManager.currentMovementSpeed
+	print(
+	"[Player]",
+	"| Melee:", meleeDamage,
+	"| Range:", rangeDamage,
+	"| Area:", areaDamage,
+	"| Health:", currentPv,
+	"| MoveSpeed:", moveSpeed,
+	"| RangeInterval:", rangeAttackInterval,
+	"| MeleeInterval:", meleeAttackInterval,
+	"| AreaInterval:", areaAttackInterval
+	)
 
 func SetAttackIntervals():
 	meleeAttackTimer.wait_time = meleeAttackInterval
-	rangeAttackTimer.wait_time = rangeAttackInterval
+	rangeAttackTimer.wait_time = rangeAttackInterval 
+
 	if areaAttack:
 		areaAttack.attackInterval = areaAttackInterval
-		areaAttack.attackTimer.wait_time = areaAttack
+		areaAttack.attackTimer.wait_time = areaAttackInterval
 
 func TakeDammage(dammage: int) -> void:
 	if currentPv - dammage > 0:
@@ -93,11 +118,6 @@ func rangeAttack() -> void:
 	rangeAttack.global_rotation = global_rotation
 	rangeAttack.damage = rangeDamage
 	rangeAttack.InitTargetToAttack()
-
-func AreaAttack() -> void:
-	areaAttack = areaAttackScene.instantiate()
-	areaAttack.damage = areaDamage
-	add_child(areaAttack)
 
 func _physics_process(delta: float) -> void:
 	read_move_inputs()

@@ -18,7 +18,7 @@ var currentEnemyNumber: int = 0
 # Attack Scenes
 @export var meleeEnemy: PackedScene
 @export var rangeEnemy: PackedScene
-@export var BossEnemy: PackedScene
+@export var bossEnemy: PackedScene
 
 var player: Player
 # IMPORTANT : Changer pour faire spawn les enemies en dehors de la vue du joueur
@@ -27,11 +27,15 @@ var maxSpawnDistance: float = 10.0
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
-	MeleeSpawnTimer.start(MeleeSpawnTiming)
-	MeleeSpawnTimer.timeout.connect(SpawnEnnemy.bind(meleeEnemy))
+	#MeleeSpawnTimer.start(MeleeSpawnTiming)
+	#MeleeSpawnTimer.timeout.connect(SpawnEnnemy.bind(meleeEnemy))
+	#
+	#RangeSpawnTimer.start(RangeSpawnTiming)
+	#RangeSpawnTimer.timeout.connect(SpawnEnnemy.bind(rangeEnemy))
 	
-	RangeSpawnTimer.start(RangeSpawnTiming)
-	RangeSpawnTimer.timeout.connect(SpawnEnnemy.bind(rangeEnemy))
+	BossSpawnTimer.start(BossSpawnTiming)
+	BossSpawnTimer.timeout.connect(SpawnEnnemy.bind(bossEnemy))
+	
 
 func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	if currentEnemyNumber >= spawnLimit:

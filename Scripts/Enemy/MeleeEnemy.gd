@@ -10,6 +10,9 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player") as Player
 	InitStat()
 	UpdateHealthBar()
+	
+	var random_offset = randf_range(0.0, 1.0)
+	await get_tree().create_timer(random_offset).timeout
 	meleeAttackTimer.start(meleeAttackInterval)
 	meleeAttackTimer.timeout.connect(Attack)
 

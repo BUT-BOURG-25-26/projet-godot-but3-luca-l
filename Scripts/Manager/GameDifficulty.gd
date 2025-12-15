@@ -17,8 +17,10 @@ var rangeMaxProjectilSpeed: float = 15
 
 var bossMaxHealth = 125
 var bossMaxMovementSpeed: float = 25
-var bossMinAttackTiming: float = 0.25
-var bossMaxDammage: float
+var bossMinMeleeAttackTiming: float = 0.25
+var bossMinDashAttackTiming: float = 0.25
+var bossMaxMeleeDamage: float
+var bossMaxDashDamage: float
 
 # _______________Current stats_______________
 var enemyCurrentSpawnLimit = 1
@@ -35,14 +37,17 @@ var rangeCurrentDammage: float = 1
 var rangeCurrentProjectilSpeed: float = 5
 
 var bossCurrentHealth = 8
-var bossCurrentMovementSpeed: float = 5
-var bossCurrentAttackTiming: float = 1.5
-var bossCurrentDammage: float = 1
+var bossCurrentMovementSpeed: float = 4
+var bossCurrentMeleeAttackTiming: float = 1.5
+var bossCurrentDashAttackTiming: float = 1.5
+var bossCurrentMeleeDamage: float = 2.5
+var bossCurrentDashDamage: float = 3.5
 
 func UpdateMaxStats():
 	meleeMaxDammage = PlayerStatManager.playerMaxHealth * 0.25
 	rangeMaxDammage = PlayerStatManager.playerMaxHealth * 0.15
-	bossMaxDammage = PlayerStatManager.playerMaxHealth * 0.45
+	bossMaxMeleeDamage = PlayerStatManager.playerMaxHealth * 0.35
+	bossMaxDashDamage = PlayerStatManager.playerMaxHealth * 0.45
 
 func IncreaseDifficulty(newLevel: int):
 	UpdateMaxStats()
@@ -110,11 +115,17 @@ func IncreaseBossEnemyStats():
 		bossCurrentHealth *= GROWTH_MULTIPLIER
 		bossCurrentHealth = clamp(bossCurrentHealth, 0, bossMaxHealth)
 	elif randomValue == 1:
-		bossCurrentDammage *= GROWTH_MULTIPLIER
-		bossCurrentDammage = clamp(bossCurrentDammage, 0, bossMaxDammage)
+		bossCurrentMeleeDamage *= GROWTH_MULTIPLIER
+		bossCurrentMeleeDamage = clamp(bossCurrentMeleeDamage, 0, bossMaxMeleeDamage)
+		
+		bossCurrentDashDamage *= GROWTH_MULTIPLIER
+		bossCurrentDashDamage = clamp(bossCurrentDashDamage, 0, bossMaxDashDamage)
 	elif randomValue == 2:
 		bossCurrentMovementSpeed *= 1.1 
 		bossCurrentMovementSpeed = clamp(bossCurrentMovementSpeed, 0, bossMaxMovementSpeed)	
 	else:
-		bossCurrentAttackTiming *= TIMING_REDUCTION
-		bossCurrentAttackTiming = clamp(bossCurrentAttackTiming, bossMinAttackTiming, 1.5)
+		bossCurrentMeleeAttackTiming *= TIMING_REDUCTION
+		bossCurrentMeleeAttackTiming = clamp(bossCurrentMeleeAttackTiming, bossMinMeleeAttackTiming, 1.5)
+		
+		bossCurrentDashAttackTiming *= TIMING_REDUCTION
+		bossCurrentDashAttackTiming = clamp(bossCurrentDashAttackTiming, bossMinDashAttackTiming, 1.5)

@@ -19,6 +19,7 @@ func _ready() -> void:
 func EndOfLevel() -> void:
 	var enemies = get_tree().get_nodes_in_group("Enemy")
 	if player && enemySpawner && enemies.is_empty():
+		enemySpawner.StopSpawners()
 		levelsToNextUpgrade -= 1
 		print("ENDOFLEVEL: Niveau ", gameLevel, " terminé. Prochain menu dans ", levelsToNextUpgrade, " niveaux.")
 		if levelsToNextUpgrade <= 0:
@@ -33,6 +34,11 @@ func EndOfLevel() -> void:
 func StartNextLevel() -> void:
 	gameLevel += 1
 	enemySpawner.currentEnemyNumber = 0
+	enemySpawner.numberOfBoss = 0
+	
+	enemySpawner.EnableMeleeSpawn()
+	if enemySpawner && gameLevel >= 5:
+		enemySpawner.EnableRangeSpawn()
 	
 	if levelsToNextUpgrade <= 0:
 		SetNextUpgradeLevel()

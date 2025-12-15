@@ -117,6 +117,7 @@ func rangeAttack() -> void:
 	rangeAttack.global_position = global_position
 	rangeAttack.global_rotation = global_rotation
 	rangeAttack.damage = rangeDamage
+	rangeAttack.isEnemyATarget = true
 	rangeAttack.InitTargetToAttack()
 
 func _physics_process(delta: float) -> void:

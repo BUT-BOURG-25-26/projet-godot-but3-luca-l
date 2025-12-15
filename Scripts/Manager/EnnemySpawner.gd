@@ -17,7 +17,7 @@ var currentEnemyNumber: int = 0
 
 # Attack Scenes
 @export var meleeEnemy: PackedScene
-@export var RangeEnemy: PackedScene
+@export var rangeEnemy: PackedScene
 @export var BossEnemy: PackedScene
 
 var player: Player
@@ -29,6 +29,9 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	MeleeSpawnTimer.start(MeleeSpawnTiming)
 	MeleeSpawnTimer.timeout.connect(SpawnEnnemy.bind(meleeEnemy))
+	
+	RangeSpawnTimer.start(RangeSpawnTiming)
+	RangeSpawnTimer.timeout.connect(SpawnEnnemy.bind(rangeEnemy))
 
 func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	if currentEnemyNumber >= spawnLimit:

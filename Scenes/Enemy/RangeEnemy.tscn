@@ -1,0 +1,81 @@
+[gd_scene load_steps=9 format=3 uid="uid://dya16vgcd0f5e"]
+
+[ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="1_s0ejs"]
+[ext_resource type="Material" uid="uid://c1vgtjis674jg" path="res://Materials/RedMat.tres" id="1_x8ngp"]
+[ext_resource type="Script" uid="uid://cvf4j70484pef" path="res://Scripts/Enemy/RangeEnemy.gd" id="1_yyph7"]
+[ext_resource type="PackedScene" uid="uid://d1p4ond8xy135" path="res://Scenes/Attack/RangeAttack.tscn" id="2_o0rqa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8ngp"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kupyg"]
+viewport_path = NodePath("HealthBarSprite/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yyph7"]
+bg_color = Color(0.737255, 1, 0.819608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0rqa"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0.654902, 0.317647, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="RangeEnemy" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 11
+script = ExtResource("1_yyph7")
+rangeAttackScene = ExtResource("2_o0rqa")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = ExtResource("1_x8ngp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_x8ngp")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="RangeAttackTimer" type="Timer" parent="Timers"]
+
+[node name="HealthBarSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0.011326, 0.740542, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_kupyg")
+
+[node name="SubViewport" type="SubViewport" parent="HealthBarSprite"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(100, 25)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="HealthBarSprite/SubViewport"]
+
+[node name="HealthBar" type="ProgressBar" parent="HealthBarSprite/SubViewport/CanvasLayer" groups=["HealthBar"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_yyph7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_o0rqa")
+show_percentage = false
+script = ExtResource("1_s0ejs")

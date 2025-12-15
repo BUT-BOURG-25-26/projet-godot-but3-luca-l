@@ -13,6 +13,7 @@ var rangeMaxHealth = 50
 var rangeMaxMovementSpeed: float = 20
 var rangeMinAttackTiming: float = 0.5
 var rangeMaxDammage: float
+var rangeMaxProjectilSpeed: float = 15
 
 var bossMaxHealth = 125
 var bossMaxMovementSpeed: float = 25
@@ -31,6 +32,7 @@ var rangeCurrentHealth = 2
 var rangeCurrentMovementSpeed: float = 2
 var rangeCurrentAttackTiming: float = 1.5
 var rangeCurrentDammage: float = 1
+var rangeCurrentProjectilSpeed: float = 5
 
 var bossCurrentHealth = 8
 var bossCurrentMovementSpeed: float = 5
@@ -91,6 +93,9 @@ func IncreaseRangeEnemyStats():
 	elif randomValue == 2:
 		rangeCurrentMovementSpeed *= GROWTH_MULTIPLIER
 		rangeCurrentMovementSpeed = clamp(rangeCurrentMovementSpeed, 0, rangeMaxMovementSpeed)
+		
+		rangeCurrentProjectilSpeed *= GROWTH_MULTIPLIER
+		rangeCurrentProjectilSpeed = clamp(rangeCurrentProjectilSpeed, 0, rangeMaxProjectilSpeed)
 	else:
 		rangeCurrentAttackTiming *= TIMING_REDUCTION 
 		rangeCurrentAttackTiming = clamp(rangeCurrentAttackTiming, rangeMinAttackTiming, 1.5)

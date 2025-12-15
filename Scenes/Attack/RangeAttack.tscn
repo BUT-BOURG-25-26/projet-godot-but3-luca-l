@@ -1,15 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1p4ond8xy135"]
+[gd_scene load_steps=4 format=3 uid="uid://d1p4ond8xy135"]
 
 [ext_resource type="Script" uid="uid://dxpwv4w3jpsil" path="res://Scripts/Attack/RangeAttack.gd" id="1_t37vp"]
+[ext_resource type="Material" uid="uid://ndcgh3s2wpvu" path="res://Materials/YellowMat.tres" id="2_37vrh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t37vp"]
 
 [node name="RangeAttack" type="Area3D"]
 collision_layer = 8
-collision_mask = 4
+collision_mask = 6
 script = ExtResource("1_t37vp")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = ExtResource("2_37vrh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_t37vp")

@@ -47,6 +47,7 @@ action_down = "Down"
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.708352, 0.705859, 0, -0.705859, 0.708352, 0.8, 6, 6.7)
 script = ExtResource("4_ovofm")
+offset = Vector3(0.5, 4.5, 5)
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_yijg0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08191, 0)

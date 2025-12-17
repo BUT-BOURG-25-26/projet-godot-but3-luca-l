@@ -23,8 +23,8 @@ var currentEnemyNumber: int = 0
 var player: Player
 
 # IMPORTANT : Changer pour faire spawn les enemies en dehors de la vue du joueur
-var minSpawnDistance: float = -10.0
-var maxSpawnDistance: float = 10.0
+var minSpawnRadius: float = 4.0 
+var maxSpawnRadius: float = 12.0
 
 var numberOfBoss: int = 0
 
@@ -66,8 +66,15 @@ func StopSpawners():
 	BossSpawnTimer.stop()
 
 func SpawnPosition(enemy: CharacterBody3D) -> void:
-	if player && enemy is CharacterBody3D:
-			var playerPos: Vector3 = (player.global_position)
-			var x = randf_range(minSpawnDistance, maxSpawnDistance)
-			var z = randf_range(minSpawnDistance, maxSpawnDistance)
-			enemy.global_position = Vector3(x, 0.0 , z)
+	if player and enemy is CharacterBody3D:
+		var angle = randf() * TAU 
+
+		var distance = randf_range(minSpawnRadius, maxSpawnRadius)
+
+		var offset_x = cos(angle) * distance
+		var offset_z = sin(angle) * distance
+
+		var spawn_pos = player.global_position + Vector3(offset_x, 0.0, offset_z)
+		
+		enemy.global_position = spawn_pos
+		enemy.look_at(player.global_position, Vector3.UP)

@@ -122,21 +122,27 @@ func rangeAttack() -> void:
 
 func _physics_process(delta: float) -> void:
 	read_move_inputs()
-	move_inputs *= moveSpeed * delta
 	
-	if !is_on_floor():
-		velocity.y = get_gravity().y
-	
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	else:
+		velocity.y = 0
+
 	if move_inputs != Vector2.ZERO:
-		global_position += Vector3(move_inputs.x, 0.0, move_inputs.y)
-		var look_direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()
-		look_at(global_position + look_direction, Vector3.UP)
+		var direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()
+		velocity.x = direction.x * moveSpeed
+		velocity.z = direction.z * moveSpeed
 		
-	rotation_degrees.x = 0
-	rotation_degrees.z = 0 
+		look_at(global_position + direction, Vector3.UP)
+		rotation_degrees.x = 0
+		rotation_degrees.z = 0 
+	else:
+		velocity.x = move_toward(velocity.x, 0, moveSpeed)
+		velocity.z = move_toward(velocity.z, 0, moveSpeed)
+
+	move_and_slide()
 
 func read_move_inputs():
 	move_inputs.x = Input.get_action_strength("Right") - Input.get_action_strength("Left")
 	move_inputs.y = Input.get_action_strength("Down") - Input.get_action_strength("Up")
 	move_inputs = move_inputs.normalized()
-	return

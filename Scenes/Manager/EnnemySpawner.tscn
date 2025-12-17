@@ -6,8 +6,6 @@
 [node name="EnnemySpawner" type="Node3D"]
 script = ExtResource("1_f4yts")
 meleeEnemy = ExtResource("2_26alg")
-RangeEnemy = ExtResource("2_26alg")
-BossEnemy = ExtResource("2_26alg")
 
 [node name="Timers" type="Node" parent="."]
 

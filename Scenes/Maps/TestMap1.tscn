@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cacea55pfqot5"]
+
+[ext_resource type="Material" uid="uid://cg0avy2hauws0" path="res://Materials/Ground/Parquet1/Ground1.tres" id="1_a7bqv"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cdbqk"]
+size = Vector2(50, 50)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_a8hl3"]
+
+[node name="TestMap1" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+collision_mask = 15
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 0.101, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("1_a7bqv")
+mesh = SubResource("PlaneMesh_cdbqk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape3D_a8hl3")

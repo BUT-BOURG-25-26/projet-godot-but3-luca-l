@@ -1,13 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=13 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
-[ext_resource type="Material" uid="uid://dlsrkaxhigpt" path="res://Materials/BlueMat.tres" id="2_r5ka5"]
 [ext_resource type="PackedScene" uid="uid://c6xfhrkl1cqr7" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://dya16vgcd0f5e" path="res://Scenes/Enemy/RangeEnemy.tscn" id="2_xwjbm"]
 [ext_resource type="PackedScene" uid="uid://q3eggwev5rag" path="res://Scenes/Enemy/BossEnemy.tscn" id="3_rhmiw"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
+[ext_resource type="Script" uid="uid://b36yw3gk2g236" path="res://Scripts/Map/InfiniteMapGenerator.gd" id="5_uotjs"]
+[ext_resource type="PackedScene" uid="uid://cacea55pfqot5" path="res://Scenes/Maps/TestMap1.tscn" id="6_vu60g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -20,10 +21,6 @@ background_color = Color(0.482706, 0.491767, 0.404799, 1)
 sky = SubResource("Sky_r5ka5")
 tonemap_mode = 2
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_mofsa"]
-
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ovofm"]
-
 [node name="GameplayScene" type="Node3D"]
 
 [node name="EnnemySpawner" parent="." groups=["EnemySpawner"] instance=ExtResource("1_u8j7u")]
@@ -35,19 +32,11 @@ bossEnemy = ExtResource("3_rhmiw")
 [node name="LevelUpMenu" parent="UI" groups=["LevelUpMenu"] instance=ExtResource("2_u8j7u")]
 
 [node name="Map" type="Node3D" parent="."]
+script = ExtResource("5_uotjs")
+chunk_scenes = Array[PackedScene]([ExtResource("6_vu60g")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
 environment = SubResource("Environment_yijg0")
-
-[node name="Ground" type="StaticBody3D" parent="Map"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Ground"]
-transform = Transform3D(9.78836, 0, 0, 0, 0.989199, 0, 0, 0, 9.78836, 0, 0, 0)
-material_override = ExtResource("2_r5ka5")
-mesh = SubResource("PlaneMesh_mofsa")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ground"]
-shape = SubResource("WorldBoundaryShape3D_ovofm")
 
 [node name="Virtual Joystick" parent="." instance=ExtResource("3_tdndw")]
 action_left = "Left"

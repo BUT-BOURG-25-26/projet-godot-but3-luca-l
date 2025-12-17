@@ -15,6 +15,13 @@ run/main_scene="uid://dmjbg6r7aoiuu"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameManager="*res://Scripts/Manager/GameManager.gd"
+UiManager="*res://Scripts/Manager/UiManager.gd"
+GameDifficulty="*res://Scripts/Manager/GameDifficulty.gd"
+PlayerStatManager="*res://Scripts/Manager/PlayerStatManager.gd"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/virtual_joystick/plugin.cfg")

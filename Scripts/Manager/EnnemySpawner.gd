@@ -1,7 +1,8 @@
+class_name EnemySpawner
 extends Node3D
 
 # IMPORTANT : Mettre le spawnLimit dans GameManager plus tard
-@export var spawnLimit: int = 10
+var spawnLimit: int = GameDifficulty.enemyCurrentSpawnLimit
 var currentEnemyNumber: int = 0
 
 #Timers
@@ -16,26 +17,53 @@ var currentEnemyNumber: int = 0
 
 # Attack Scenes
 @export var meleeEnemy: PackedScene
-@export var RangeEnemy: PackedScene
-@export var BossEnemy: PackedScene
+@export var rangeEnemy: PackedScene
+@export var bossEnemy: PackedScene
 
 var player: Player
+
 # IMPORTANT : Changer pour faire spawn les enemies en dehors de la vue du joueur
 var minSpawnDistance: float = -10.0
 var maxSpawnDistance: float = 10.0
 
+var numberOfBoss: int = 0
+
+
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
-	MeleeSpawnTimer.start(MeleeSpawnTiming)
 	MeleeSpawnTimer.timeout.connect(SpawnEnnemy.bind(meleeEnemy))
+	RangeSpawnTimer.timeout.connect(SpawnEnnemy.bind(rangeEnemy))
+	EnableMeleeSpawn()
+
+func EnableMeleeSpawn():
+	if MeleeSpawnTimer.is_stopped():
+		MeleeSpawnTimer.start(MeleeSpawnTiming)
+
+func EnableRangeSpawn():
+	if RangeSpawnTimer.is_stopped(): 
+		RangeSpawnTimer.start(RangeSpawnTiming)
 
 func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	if currentEnemyNumber >= spawnLimit:
+		if numberOfBoss < GameManager.gameLevel / 10:
+			numberOfBoss += 1
+			var boss = bossEnemy.instantiate()
+			boss.add_to_group("Enemy")
+			add_child(boss)
+			SpawnPosition(boss)
+			return
+		GameManager.EndOfLevel()
 		return
 	currentEnemyNumber += 1
 	var enemy = ennemyToSpawn.instantiate()
+	enemy.add_to_group("Enemy")
 	add_child(enemy)
 	SpawnPosition(enemy)
+
+func StopSpawners():
+	MeleeSpawnTimer.stop()
+	RangeSpawnTimer.stop()
+	BossSpawnTimer.stop()
 
 func SpawnPosition(enemy: CharacterBody3D) -> void:
 	if player && enemy is CharacterBody3D:

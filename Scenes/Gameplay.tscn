@@ -1,8 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=14 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
 [ext_resource type="Material" uid="uid://dlsrkaxhigpt" path="res://Materials/BlueMat.tres" id="2_r5ka5"]
+[ext_resource type="PackedScene" uid="uid://c6xfhrkl1cqr7" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
+[ext_resource type="PackedScene" uid="uid://dya16vgcd0f5e" path="res://Scenes/Enemy/RangeEnemy.tscn" id="2_xwjbm"]
+[ext_resource type="PackedScene" uid="uid://q3eggwev5rag" path="res://Scenes/Enemy/BossEnemy.tscn" id="3_rhmiw"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
 
@@ -23,7 +26,13 @@ tonemap_mode = 2
 
 [node name="GameplayScene" type="Node3D"]
 
-[node name="EnnemySpawner" parent="." instance=ExtResource("1_u8j7u")]
+[node name="EnnemySpawner" parent="." groups=["EnemySpawner"] instance=ExtResource("1_u8j7u")]
+rangeEnemy = ExtResource("2_xwjbm")
+bossEnemy = ExtResource("3_rhmiw")
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="LevelUpMenu" parent="UI" groups=["LevelUpMenu"] instance=ExtResource("2_u8j7u")]
 
 [node name="Map" type="Node3D" parent="."]
 

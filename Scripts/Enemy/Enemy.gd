@@ -1,22 +1,31 @@
 class_name Enemy
 extends CharacterBody3D
 
+# UI
+var healthbar: ProgressBar
+
 # Gameplay
 var player: Player
-var currentLevel = 1
-@export var dammage = 1
 
-# Health
-@export var maxPv: int = 10
-@export var currentPv: int = maxPv
+# Stats
+var maxPv: float
+var currentPv: float
+var damage: float
+var moveSpeed: float
 
-# Movement 
-@export var moveSpeed: float = 3.0
+func UpdateHealthBar() -> void:
+	healthbar.max_value = maxPv
+	healthbar.update(currentPv)
 
-func TakeDammage(dammage: int) -> void:
-	if currentPv - dammage > 0:
-		currentPv -= dammage
+func TakeDammage(damageTaken: float) -> void:
+	if currentPv - damageTaken > 0:
+		currentPv -= damageTaken
+		healthbar.update(currentPv)
 	else:
 		queue_free()
-	print("Enemy : " + str(currentPv))
 	return
+
+# Overide a chaque type d'enemy
+func InitStat():
+	maxPv = 1.0
+	currentPv = maxPv

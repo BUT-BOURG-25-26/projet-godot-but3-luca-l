@@ -4,26 +4,27 @@ extends CharacterBody3D
 # UI
 var healthbar: ProgressBar
 
-
 # Gameplay
 var move_inputs: Vector2
-var currentLevel = 1
-var dammage = 1
 
+# Stats
+var meleeDamage: float
+var rangeDamage: float
+var areaDamage: float
 
-# Health
-@export var maxPv: int = 5
-@export var currentPv: int = maxPv
-
-# Movement 
-@export var moveSpeed: float = 5.0
+var maxPv: float 
+var currentPv: float 
+var moveSpeed: float
 
 # Attack Timer
-@export var meleeAttackInterval: float = 1.5
+var meleeAttackInterval: float
 @onready var meleeAttackTimer:Timer = $Timers/MeleAttackTimer
 
-@export var rangeAttackInterval: float = 0.75
+var rangeAttackInterval: float
 @onready var rangeAttackTimer:Timer = $Timers/RangeAttackTimer
+
+var areaAttackInterval: float
+var areaAttack: Node3D
 
 # Attack Scenes
 @export var meleeAttackScene: PackedScene
@@ -31,17 +32,66 @@ var dammage = 1
 @export var areaAttackScene: PackedScene
 
 func _ready() -> void:
-	meleeAttackTimer.start(meleeAttackInterval)
-	meleeAttackTimer.timeout.connect(meleeAttack)
-	
-	rangeAttackTimer.start(rangeAttackInterval)
-	rangeAttackTimer.timeout.connect(rangeAttack)
-	
-	areaAttack()
-	
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
+	
+	UpdateStats()
+	PlayerStatManager.signalStatsUpdated.connect(UpdateStats)
+	SetAttackIntervals()
+	
+	meleeAttackTimer.start()
+	meleeAttackTimer.timeout.connect(meleeAttack)
+
+func ActivateRangeAttack():
+	rangeAttackTimer.start()
+	rangeAttackTimer.timeout.connect(rangeAttack)
+
+func ActivateAreaAttack() -> void:
+	if areaAttack:
+		return 
+	areaAttack = areaAttackScene.instantiate()
+	areaAttack.damage = areaDamage
+	add_child(areaAttack)
+	SetAttackIntervals()
+
+func UpdateHealthBar():
 	healthbar.max_value = maxPv
 	healthbar.update(currentPv)
+
+func UpdateStats():
+	maxPv = PlayerStatManager.currentHealth
+	currentPv = maxPv
+	UpdateHealthBar()
+	
+	meleeDamage = PlayerStatManager.currentMeleeDammage
+	rangeDamage = PlayerStatManager.currentRangeDammage
+	areaDamage = PlayerStatManager.currentAreaDammage
+	
+	meleeAttackInterval = PlayerStatManager.currentMeleeAttackInterval
+	rangeAttackInterval = PlayerStatManager.currentRangeAttackInterval
+	if areaAttack:
+		areaAttackInterval = PlayerStatManager.currentAreaAttackInterval
+	SetAttackIntervals()
+	
+	moveSpeed = PlayerStatManager.currentMovementSpeed
+	print(
+	"[Player]",
+	"| Melee:", meleeDamage,
+	"| Range:", rangeDamage,
+	"| Area:", areaDamage,
+	"| Health:", currentPv,
+	"| MoveSpeed:", moveSpeed,
+	"| RangeInterval:", rangeAttackInterval,
+	"| MeleeInterval:", meleeAttackInterval,
+	"| AreaInterval:", areaAttackInterval
+	)
+
+func SetAttackIntervals():
+	meleeAttackTimer.wait_time = meleeAttackInterval
+	rangeAttackTimer.wait_time = rangeAttackInterval 
+
+	if areaAttack:
+		areaAttack.attackInterval = areaAttackInterval
+		areaAttack.attackTimer.wait_time = areaAttackInterval
 
 func TakeDammage(dammage: int) -> void:
 	if currentPv - dammage > 0:
@@ -50,7 +100,6 @@ func TakeDammage(dammage: int) -> void:
 	else:
 		currentPv = 0
 		healthbar.update(currentPv)
-	print("player : " + str(currentPv))
 	return
 
 func meleeAttack() -> void:
@@ -59,6 +108,7 @@ func meleeAttack() -> void:
 	var local_offset: Vector3 = Vector3(0, 0, -attack_distance)
 	meleeAttack.position = local_offset
 	meleeAttack.rotation = Vector3.ZERO
+	meleeAttack.damage = meleeDamage
 	add_child(meleeAttack)
 
 func rangeAttack() -> void:
@@ -66,19 +116,16 @@ func rangeAttack() -> void:
 	get_parent().add_child(rangeAttack)
 	rangeAttack.global_position = global_position
 	rangeAttack.global_rotation = global_rotation
+	rangeAttack.damage = rangeDamage
+	rangeAttack.isEnemyATarget = true
 	rangeAttack.InitTargetToAttack()
 
-func areaAttack() -> void:
-	var areaAttack = areaAttackScene.instantiate()
-	add_child(areaAttack)
-	
-	
 func _physics_process(delta: float) -> void:
 	read_move_inputs()
 	move_inputs *= moveSpeed * delta
 	
 	if !is_on_floor():
-			velocity.y = get_gravity().y
+		velocity.y = get_gravity().y
 	
 	if move_inputs != Vector2.ZERO:
 		global_position += Vector3(move_inputs.x, 0.0, move_inputs.y)

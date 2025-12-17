@@ -1,15 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://cu4lwae71tdkv"]
+[gd_scene load_steps=8 format=3 uid="uid://q3eggwev5rag"]
 
-[ext_resource type="Script" uid="uid://erl7xv250xsf" path="res://Scripts/Enemy/MeleeEnemy.gd" id="1_hbcc1"]
-[ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="2_el1ft"]
+[ext_resource type="Material" uid="uid://ympx0ivtocb1" path="res://Materials/GreenMat.tres" id="1_rk24o"]
+[ext_resource type="Script" uid="uid://b1xlgewh1aday" path="res://Scripts/Enemy/BossEnemy.gd" id="1_rpf5i"]
+[ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="2_wit8q"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eoseg"]
-height = 1.53287
+[sub_resource type="BoxShape3D" id="BoxShape3D_wit8q"]
+size = Vector3(1, 1.28467, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lvuju"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_rpf5i"]
 viewport_path = NodePath("HealthBarSprite/SubViewport")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbn4t"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htofk"]
 bg_color = Color(0.737255, 1, 0.819608, 1)
 border_width_left = 2
 border_width_top = 2
@@ -21,7 +22,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tspbb"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sebn7"]
 content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
@@ -36,24 +37,28 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="MeleeEnemy" type="CharacterBody3D"]
+[node name="BossEnemy" type="CharacterBody3D"]
 collision_layer = 4
 collision_mask = 11
-script = ExtResource("1_hbcc1")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_eoseg")
+script = ExtResource("1_rpf5i")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = ExtResource("1_rk24o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.142334, 0)
+shape = SubResource("BoxShape3D_wit8q")
 
 [node name="Timers" type="Node" parent="."]
 
-[node name="MeleAttackTimer" type="Timer" parent="Timers"]
+[node name="DashAttackTimer" type="Timer" parent="Timers"]
+
+[node name="MeleeAttackTimer" type="Timer" parent="Timers"]
 
 [node name="HealthBarSprite" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0.740542, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0.011326, 0.740542, 0)
 billboard = 1
-texture = SubResource("ViewportTexture_lvuju")
+texture = SubResource("ViewportTexture_rpf5i")
 
 [node name="SubViewport" type="SubViewport" parent="HealthBarSprite"]
 disable_3d = true
@@ -72,7 +77,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_styles/background = SubResource("StyleBoxFlat_fbn4t")
-theme_override_styles/fill = SubResource("StyleBoxFlat_tspbb")
+theme_override_styles/background = SubResource("StyleBoxFlat_htofk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_sebn7")
 show_percentage = false
-script = ExtResource("2_el1ft")
+script = ExtResource("2_wit8q")

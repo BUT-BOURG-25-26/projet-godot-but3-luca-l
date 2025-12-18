@@ -31,6 +31,14 @@ var areaAttack: Node3D
 @export var rangeAttackScene: PackedScene
 @export var areaAttackScene: PackedScene
 
+#Animation 
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+
+const MELEE_ANIM_NAME := "Attaque_melee"
+var melee_anim_length := 0.0
+var is_melee_attacking := false
+var melee_anim_available := false
+
 func _ready() -> void:
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
 	
@@ -40,6 +48,19 @@ func _ready() -> void:
 	
 	meleeAttackTimer.start()
 	meleeAttackTimer.timeout.connect(meleeAttack)
+	anim_player.animation_finished.connect(_on_animation_finished)
+	if anim_player.has_animation(MELEE_ANIM_NAME):
+		melee_anim_length = anim_player.get_animation(MELEE_ANIM_NAME).length
+		melee_anim_available = true
+	else:
+		push_warning("Animation '%s' introuvable dans AnimationPlayer" % MELEE_ANIM_NAME)
+	
+func _get_melee_anim_speed() -> float:
+	if melee_anim_length <= 0.0:
+		return 1.0
+
+	var interval: float = maxf(meleeAttackInterval, 0.01)
+	return clampf(melee_anim_length / interval, 0.5, 3.0)
 
 func ActivateRangeAttack():
 	rangeAttackTimer.start()
@@ -103,13 +124,28 @@ func TakeDammage(dammage: int) -> void:
 	return
 
 func meleeAttack() -> void:
+	if is_melee_attacking:
+		return
+	is_melee_attacking = true
+
+	var melee_anim_played := false
+	if melee_anim_available:
+		var speed := _get_melee_anim_speed()
+		anim_player.play(MELEE_ANIM_NAME, speed)
+		anim_player.seek(0.0, true)
+		melee_anim_played = true
+
+	# Spawn attaque
 	var meleeAttack = meleeAttackScene.instantiate()
 	var attack_distance: float = 1.17
-	var local_offset: Vector3 = Vector3(0, 0, -attack_distance)
-	meleeAttack.position = local_offset
+	meleeAttack.position = Vector3(0, 0, -attack_distance)
 	meleeAttack.rotation = Vector3.ZERO
 	meleeAttack.damage = meleeDamage
 	add_child(meleeAttack)
+
+	if !melee_anim_played:
+		_reset_melee_attack_state()
+
 
 func rangeAttack() -> void:
 	var rangeAttack = rangeAttackScene.instantiate()
@@ -140,3 +176,10 @@ func read_move_inputs():
 	move_inputs.y = Input.get_action_strength("Down") - Input.get_action_strength("Up")
 	move_inputs = move_inputs.normalized()
 	return
+
+func _reset_melee_attack_state() -> void:
+	is_melee_attacking = false
+
+func _on_animation_finished(anim_name: StringName) -> void:
+	if anim_name == MELEE_ANIM_NAME:
+		_reset_melee_attack_state()

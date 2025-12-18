@@ -1,5 +1,4 @@
 extends Node
-# IMPORTANT : REMPLACER ENSUITE PAR POURCENTAGE
 
 signal signalStatsUpdated
 
@@ -31,6 +30,15 @@ var currentMovementSpeed: float = 5
 
 var isRangeUnlocked: bool = false
 var isAreaUnlocked: bool = false
+
+# _______________Animation_______________
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+
+const MELEE_ANIM_NAME := "Attaque_melee"
+# Pour calculer la vitesse d'anim en fonction de ton intervalle
+var melee_anim_base_length := 0.0
+# (recommandé) évite de relancer l'attaque si l'anim n'est pas finie
+var is_melee_attacking := false
 
 func IncreaseMeleeDamage(multiplier: float):
 	currentMeleeDammage = clamp(currentMeleeDammage * (1.0 + multiplier), 0.0, maxMeleeDammage)

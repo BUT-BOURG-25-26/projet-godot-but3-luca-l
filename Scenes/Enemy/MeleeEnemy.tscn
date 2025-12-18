@@ -6,6 +6,10 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eoseg"]
 height = 1.53287
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dmg"]
+height = 1.8
+radius = 0.5
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_lvuju"]
 viewport_path = NodePath("HealthBarSprite/SubViewport")
 
@@ -43,6 +47,13 @@ script = ExtResource("1_hbcc1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_eoseg")
+
+[node name="DamageArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
+shape = SubResource("CapsuleShape3D_dmg")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 

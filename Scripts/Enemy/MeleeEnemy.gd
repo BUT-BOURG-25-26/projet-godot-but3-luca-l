@@ -4,6 +4,9 @@ extends Enemy
 # Attack Timer
 var meleeAttackInterval: float
 @onready var meleeAttackTimer:Timer = $Timers/MeleAttackTimer
+@onready var damage_area: Area3D = $DamageArea
+
+var targets_in_range: Array[Player] = []
 
 func _ready() -> void:
 	healthbar = $HealthBarSprite/SubViewport/CanvasLayer/HealthBar
@@ -15,6 +18,8 @@ func _ready() -> void:
 	await get_tree().create_timer(random_offset).timeout
 	meleeAttackTimer.start(meleeAttackInterval)
 	meleeAttackTimer.timeout.connect(Attack)
+	damage_area.body_entered.connect(_on_damage_area_body_entered)
+	damage_area.body_exited.connect(_on_damage_area_body_exited)
 
 func InitStat():
 	maxPv = GameDifficulty.meleeCurrentHealth
@@ -25,11 +30,14 @@ func InitStat():
 	UpdateHealthBar()
 
 func Attack()->void:
-	for i in range(get_slide_collision_count()):
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
-		if collider and collider is Player:
-			collider.TakeDammage(damage)
+	if targets_in_range.is_empty():
+		return
+	var alive_targets: Array[Player] = []
+	for target in targets_in_range:
+		if target and is_instance_valid(target):
+			target.TakeDammage(damage)
+			alive_targets.append(target)
+	targets_in_range = alive_targets
 	
 func _physics_process(delta: float) -> void:
 	if player:
@@ -46,3 +54,11 @@ func _physics_process(delta: float) -> void:
 		look_at(target_position, Vector3.UP)
 		rotate_y(deg_to_rad(180))
 	move_and_slide()
+
+func _on_damage_area_body_entered(body: Node3D) -> void:
+	if body is Player and !targets_in_range.has(body):
+		targets_in_range.append(body)
+
+func _on_damage_area_body_exited(body: Node3D) -> void:
+	if body is Player:
+		targets_in_range.erase(body)

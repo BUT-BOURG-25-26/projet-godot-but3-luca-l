@@ -33,14 +33,14 @@ var areaAttack: Node3D
 
 #Animation 
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
-
-const MELEE_ANIM_NAME := "Attaque_melee"
-var melee_anim_length := 0.0
-var is_melee_attacking := false
-var melee_anim_available := false
+var animation_controller: PlayerAnimationController
+const PUSH_UP_ACTION := "PushUp"
 
 func _ready() -> void:
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
+	animation_controller = PlayerAnimationController.new()
+	add_child(animation_controller)
+	animation_controller.setup(anim_player)
 	
 	UpdateStats()
 	PlayerStatManager.signalStatsUpdated.connect(UpdateStats)
@@ -48,19 +48,6 @@ func _ready() -> void:
 	
 	meleeAttackTimer.start()
 	meleeAttackTimer.timeout.connect(meleeAttack)
-	anim_player.animation_finished.connect(_on_animation_finished)
-	if anim_player.has_animation(MELEE_ANIM_NAME):
-		melee_anim_length = anim_player.get_animation(MELEE_ANIM_NAME).length
-		melee_anim_available = true
-	else:
-		push_warning("Animation '%s' introuvable dans AnimationPlayer" % MELEE_ANIM_NAME)
-	
-func _get_melee_anim_speed() -> float:
-	if melee_anim_length <= 0.0:
-		return 1.0
-
-	var interval: float = maxf(meleeAttackInterval, 0.01)
-	return clampf(melee_anim_length / interval, 0.5, 3.0)
 
 func ActivateRangeAttack():
 	rangeAttackTimer.start()
@@ -92,6 +79,8 @@ func UpdateStats():
 	if areaAttack:
 		areaAttackInterval = PlayerStatManager.currentAreaAttackInterval
 	SetAttackIntervals()
+	if animation_controller:
+		animation_controller.update_melee_interval(meleeAttackInterval)
 	
 	moveSpeed = PlayerStatManager.currentMovementSpeed
 	print(
@@ -124,27 +113,25 @@ func TakeDammage(dammage: int) -> void:
 	return
 
 func meleeAttack() -> void:
-	if is_melee_attacking:
+	if animation_controller and (animation_controller.is_melee_attack_active() or animation_controller.is_pushup_active()):
 		return
-	is_melee_attacking = true
 
-	var melee_anim_played := false
-	if melee_anim_available:
-		var speed := _get_melee_anim_speed()
-		anim_player.play(MELEE_ANIM_NAME, speed)
-		anim_player.seek(0.0, true)
-		melee_anim_played = true
+	var melee_anim_played := animation_controller and animation_controller.try_play_melee_attack(meleeAttackInterval)
 
 	# Spawn attaque
 	var meleeAttack = meleeAttackScene.instantiate()
 	var attack_distance: float = 1.17
-	meleeAttack.position = Vector3(0, 0, -attack_distance)
-	meleeAttack.rotation = Vector3.ZERO
-	meleeAttack.damage = meleeDamage
+	var forward := global_transform.basis.z.normalized()
+	if forward == Vector3.ZERO:
+		forward = Vector3.BACK
+	var spawn_position := global_position + forward * attack_distance
 	add_child(meleeAttack)
+	meleeAttack.global_position = spawn_position
+	meleeAttack.look_at(spawn_position + forward, Vector3.UP)
+	meleeAttack.damage = meleeDamage
 
-	if !melee_anim_played:
-		_reset_melee_attack_state()
+	if animation_controller and !melee_anim_played:
+		animation_controller.reset_melee_attack_state()
 
 
 func rangeAttack() -> void:
@@ -157,29 +144,33 @@ func rangeAttack() -> void:
 	rangeAttack.InitTargetToAttack()
 
 func _physics_process(delta: float) -> void:
+	if animation_controller and Input.is_action_just_pressed(PUSH_UP_ACTION):
+		animation_controller.trigger_pushup_sequence()
 	read_move_inputs()
-	move_inputs *= moveSpeed * delta
+	var pushup_active := animation_controller and animation_controller.is_pushup_active()
+	if pushup_active:
+		move_inputs = Vector2.ZERO
+	else:
+		move_inputs *= moveSpeed * delta
+	var is_moving := move_inputs != Vector2.ZERO
 	
 	if !is_on_floor():
 		velocity.y = get_gravity().y
 	
-	if move_inputs != Vector2.ZERO:
+	if is_moving:
 		global_position += Vector3(move_inputs.x, 0.0, move_inputs.y)
 		var look_direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()
-		look_at(global_position + look_direction, Vector3.UP)
+		# Godot considère -Z comme l'avant, donc on inverse pour garder le modèle aligné avec le déplacement
+		look_at(global_position - look_direction, Vector3.UP)
 		
 	rotation_degrees.x = 0
 	rotation_degrees.z = 0 
+
+	if animation_controller:
+		animation_controller.update_movement_animation(is_moving, moveSpeed)
 
 func read_move_inputs():
 	move_inputs.x = Input.get_action_strength("Right") - Input.get_action_strength("Left")
 	move_inputs.y = Input.get_action_strength("Down") - Input.get_action_strength("Up")
 	move_inputs = move_inputs.normalized()
 	return
-
-func _reset_melee_attack_state() -> void:
-	is_melee_attacking = false
-
-func _on_animation_finished(anim_name: StringName) -> void:
-	if anim_name == MELEE_ANIM_NAME:
-		_reset_melee_attack_state()

@@ -15,7 +15,7 @@ var projectilSpeed: float
 var isCloseEnoughToPlayer: bool = false
 
 # Attack Scenes
-@export var rangeAttackScene: PackedScene
+@export var rangeAttackScene: PackedScene = preload("res://Scenes/Attack/RangeAttack.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player") as Player

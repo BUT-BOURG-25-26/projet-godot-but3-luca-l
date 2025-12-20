@@ -6,8 +6,55 @@ var speed: float = 15
 var direction: Vector3 = Vector3.FORWARD
 var damage: float
 
+@onready var _anim_player: AnimationPlayer = find_child("AnimationPlayer", true, false) as AnimationPlayer
+var _loop_anim_name: StringName = &""
+
 func _ready():
 	body_entered.connect(_on_body_entered)
+	_start_attack_animation_loop()
+
+func _start_attack_animation_loop() -> void:
+	if _anim_player == null:
+		return
+
+	_loop_anim_name = _pick_attack_animation_name(_anim_player)
+	if _loop_anim_name == &"":
+		return
+
+	var anim: Animation = _anim_player.get_animation(_loop_anim_name)
+	if anim != null:
+		anim.loop_mode = Animation.LOOP_LINEAR
+
+	if not _anim_player.animation_finished.is_connected(_on_animation_finished):
+		_anim_player.animation_finished.connect(_on_animation_finished)
+
+	_anim_player.play(_loop_anim_name)
+
+func _on_animation_finished(anim_name: StringName) -> void:
+	if _anim_player == null:
+		return
+	if _loop_anim_name == &"":
+		return
+	if anim_name == _loop_anim_name:
+		_anim_player.play(_loop_anim_name)
+
+func _pick_attack_animation_name(anim_player: AnimationPlayer) -> StringName:
+	if anim_player.has_animation(&"Attaque"):
+		return &"Attaque"
+	if anim_player.has_animation(&"attaque"):
+		return &"attaque"
+
+	for name in anim_player.get_animation_list():
+		if String(name).to_lower() == "attaque":
+			return name
+	for name in anim_player.get_animation_list():
+		if String(name).to_lower().ends_with("/attaque"):
+			return name
+
+	var all_anims := anim_player.get_animation_list()
+	if not all_anims.is_empty():
+		return all_anims[0]
+	return &""
 
 func InitTargetToAttack() -> void:
 	var target: Node3D

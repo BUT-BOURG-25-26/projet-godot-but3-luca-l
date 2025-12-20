@@ -1,13 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c4orrak2hn07y"]
+[gd_scene load_steps=5 format=3 uid="uid://c4orrak2hn07y"]
 
 [ext_resource type="Script" uid="uid://bqe4hjktshgpp" path="res://Scripts/Manager/EnnemySpawner.gd" id="1_f4yts"]
 [ext_resource type="PackedScene" uid="uid://cu4lwae71tdkv" path="res://Scenes/Enemy/MeleeEnemy.tscn" id="2_26alg"]
+[ext_resource type="PackedScene" uid="uid://bw7rjeyk0p4m1" path="res://Scenes/Enemy/RangeEnemy.tscn" id="3_lqk4x"]
+[ext_resource type="PackedScene" uid="uid://dprr3n6h0cxxc" path="res://Scenes/Enemy/BossEnemy.tscn" id="4_2s3f0"]
 
 [node name="EnnemySpawner" type="Node3D"]
 script = ExtResource("1_f4yts")
 meleeEnemy = ExtResource("2_26alg")
-RangeEnemy = ExtResource("2_26alg")
-BossEnemy = ExtResource("2_26alg")
+rangeEnemy = ExtResource("3_lqk4x")
+bossEnemy = ExtResource("4_2s3f0")
 
 [node name="Timers" type="Node" parent="."]
 

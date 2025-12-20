@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=13 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
+[ext_resource type="Script" path="res://Scripts/Manager/GameplayScene.gd" id="5_gameplay"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -23,6 +24,7 @@ tonemap_mode = 2
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ovofm"]
 
 [node name="GameplayScene" type="Node3D"]
+script = ExtResource("5_gameplay")
 
 [node name="EnnemySpawner" parent="." groups=["EnemySpawner"] instance=ExtResource("1_u8j7u")]
 

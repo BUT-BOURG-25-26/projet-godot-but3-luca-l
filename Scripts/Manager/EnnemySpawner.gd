@@ -16,9 +16,9 @@ var currentEnemyNumber: int = 0
 @onready var BossSpawnTimer: Timer = $Timers/BossSpawnTimer
 
 # Attack Scenes
-@export var meleeEnemy: PackedScene
-@export var rangeEnemy: PackedScene
-@export var bossEnemy: PackedScene
+@export var meleeEnemy: PackedScene = preload("res://Scenes/Enemy/MeleeEnemy.tscn")
+@export var rangeEnemy: PackedScene = preload("res://Scenes/Enemy/RangeEnemy.tscn")
+@export var bossEnemy: PackedScene = preload("res://Scenes/Enemy/BossEnemy.tscn")
 
 var player: Player
 
@@ -31,6 +31,15 @@ var numberOfBoss: int = 0
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
+	if meleeEnemy == null:
+		push_warning("EnemySpawner: 'meleeEnemy' n'est pas assigné (PackedScene null) -> fallback preload.")
+		meleeEnemy = preload("res://Scenes/Enemy/MeleeEnemy.tscn")
+	if rangeEnemy == null:
+		push_warning("EnemySpawner: 'rangeEnemy' n'est pas assigné (PackedScene null) -> fallback preload.")
+		rangeEnemy = preload("res://Scenes/Enemy/RangeEnemy.tscn")
+	if bossEnemy == null:
+		push_warning("EnemySpawner: 'bossEnemy' n'est pas assigné (PackedScene null) -> fallback preload.")
+		bossEnemy = preload("res://Scenes/Enemy/BossEnemy.tscn")
 	MeleeSpawnTimer.timeout.connect(SpawnEnnemy.bind(meleeEnemy))
 	RangeSpawnTimer.timeout.connect(SpawnEnnemy.bind(rangeEnemy))
 	EnableMeleeSpawn()
@@ -47,6 +56,9 @@ func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	if currentEnemyNumber >= spawnLimit:
 		if numberOfBoss < GameManager.gameLevel / 10:
 			numberOfBoss += 1
+			if bossEnemy == null:
+				push_error("EnemySpawner.SpawnEnnemy: bossEnemy est null (PackedScene). Assigne une scène de boss dans l'inspecteur.")
+				return
 			var boss = bossEnemy.instantiate()
 			boss.add_to_group("Enemy")
 			add_child(boss)
@@ -54,8 +66,11 @@ func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 			return
 		GameManager.EndOfLevel()
 		return
-	currentEnemyNumber += 1
+	if ennemyToSpawn == null:
+		push_error("EnemySpawner.SpawnEnnemy: ennemyToSpawn est null (PackedScene). Assigne la scène dans l'inspecteur (ex: RangeEnemy/MeleeEnemy).")
+		return
 	var enemy = ennemyToSpawn.instantiate()
+	currentEnemyNumber += 1
 	enemy.add_to_group("Enemy")
 	add_child(enemy)
 	SpawnPosition(enemy)

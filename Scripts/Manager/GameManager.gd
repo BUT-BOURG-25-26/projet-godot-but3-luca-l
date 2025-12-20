@@ -11,10 +11,42 @@ var levelsToNextUpgrade: int = 0
 var enemySpawner: EnemySpawner
 var player: Player
 
+const RANGE_ENEMY_START_LEVEL := 5
+
+@export var start_directly_at_range_wave: bool = true
+
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	enemySpawner = get_tree().get_first_node_in_group("EnemySpawner")
 	SetNextUpgradeLevel()
+	if start_directly_at_range_wave:
+		# Defer to ensure EnemySpawner finished its own _ready().
+		call_deferred("_start_at_range_enemy_wave")
+
+
+func _start_at_range_enemy_wave() -> void:
+	if !start_directly_at_range_wave:
+		return
+	_initialize_game_at_level(RANGE_ENEMY_START_LEVEL)
+
+
+func _initialize_game_at_level(target_level: int) -> void:
+	if enemySpawner == null:
+		return
+	gameLevel = max(1, target_level)
+
+	# Approximate progression by applying difficulty steps up to the target level.
+	GameDifficulty.UpdateMaxStats()
+	for lvl in range(2, gameLevel + 1):
+		GameDifficulty.IncreaseDifficulty(lvl)
+	enemySpawner.spawnLimit = GameDifficulty.enemyCurrentSpawnLimit
+
+	# Make sure spawners/timers are in the correct state for the starting level.
+	enemySpawner.currentEnemyNumber = 0
+	enemySpawner.numberOfBoss = 0
+	enemySpawner.EnableMeleeSpawn()
+	if gameLevel >= RANGE_ENEMY_START_LEVEL:
+		enemySpawner.EnableRangeSpawn()
 
 func EndOfLevel() -> void:
 	var enemies = get_tree().get_nodes_in_group("Enemy")

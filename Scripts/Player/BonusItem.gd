@@ -4,6 +4,9 @@ extends Area3D
 const DESPAWN_SECONDS: float = 20.0
 const SPIN_DEG_PER_SEC: float = 90.0
 
+const POWERUP_SFX_PATH := "res://Assets/Sons/powerUp.mp3"
+const NUKE_SFX_PATH := "res://Assets/Sons/explosion.mp3"
+
 enum BonusType { HEAL, SUPER_SPEED, SUPER_ATTACK_SPEED, SUPER_DAMAGE, NUKE }
 var currentType: BonusType
 
@@ -140,5 +143,19 @@ func _apply_attack_speed_tint_if_needed(visual_root: Node) -> void:
 func _on_body_entered(body: Node3D) -> void:
 	if body is Player:
 		_picked_up = true
+		_play_pickup_sfx()
 		body.ApplyBonus(currentType)
 		queue_free()
+
+func _play_pickup_sfx() -> void:
+	var path := NUKE_SFX_PATH if currentType == BonusType.NUKE else POWERUP_SFX_PATH
+	var sfx_stream := load(path) as AudioStream
+	if sfx_stream == null:
+		push_warning("BonusItem: impossible de charger %s" % path)
+		return
+	var player := AudioStreamPlayer.new()
+	player.stream = sfx_stream
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().current_scene.add_child(player)
+	player.finished.connect(player.queue_free)
+	player.play()

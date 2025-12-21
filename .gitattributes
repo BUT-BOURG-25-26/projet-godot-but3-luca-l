@@ -1,4 +1,4 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
-Scenes/Gameplay.tscn filter=lfs diff=lfs merge=lfs -text
+Scenes/Gameplay.tscn -filter -diff -merge text eol=lf
 Scenes/Gameplay.tscn !text !filter !merge !diff

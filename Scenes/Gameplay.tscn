@@ -1,0 +1,60 @@
+[gd_scene load_steps=13 format=3 uid="uid://dmjbg6r7aoiuu"]
+
+[ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
+[ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
+[ext_resource type="Material" uid="uid://dlsrkaxhigpt" path="res://Materials/BlueMat.tres" id="2_r5ka5"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
+[ext_resource type="Script" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
+[ext_resource type="Script" path="res://Scripts/Manager/GameplayScene.gd" id="5_gameplay"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
+
+[sub_resource type="Sky" id="Sky_r5ka5"]
+sky_material = SubResource("ProceduralSkyMaterial_yijg0")
+
+[sub_resource type="Environment" id="Environment_yijg0"]
+background_mode = 2
+background_color = Color(0.482706, 0.491767, 0.404799, 1)
+sky = SubResource("Sky_r5ka5")
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mofsa"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ovofm"]
+
+[node name="GameplayScene" type="Node3D"]
+script = ExtResource("5_gameplay")
+
+[node name="EnnemySpawner" parent="." groups=["EnemySpawner"] instance=ExtResource("1_u8j7u")]
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="LevelUpMenu" parent="UI" groups=["LevelUpMenu"] instance=ExtResource("2_u8j7u")]
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
+environment = SubResource("Environment_yijg0")
+
+[node name="Ground" type="StaticBody3D" parent="Map"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Ground"]
+transform = Transform3D(9.78836, 0, 0, 0, 0.989199, 0, 0, 0, 9.78836, 0, 0, 0)
+material_override = ExtResource("2_r5ka5")
+mesh = SubResource("PlaneMesh_mofsa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ground"]
+shape = SubResource("WorldBoundaryShape3D_ovofm")
+
+[node name="Virtual Joystick" parent="." instance=ExtResource("3_tdndw")]
+action_left = "Left"
+action_right = "Right"
+action_up = "Up"
+action_down = "Down"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.708352, 0.705859, 0, -0.705859, 0.708352, 0.8, 6, 6.7)
+script = ExtResource("4_ovofm")
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("1_yijg0")]

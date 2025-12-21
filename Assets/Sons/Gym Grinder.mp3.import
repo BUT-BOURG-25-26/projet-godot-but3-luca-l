@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://blofrxqdm36se"
+path="res://.godot/imported/Gym Grinder.mp3-a90c54c6d074046c38f76ef269c18e29.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sons/Gym Grinder.mp3"
+dest_files=["res://.godot/imported/Gym Grinder.mp3-a90c54c6d074046c38f76ef269c18e29.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

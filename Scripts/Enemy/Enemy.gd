@@ -15,7 +15,7 @@ var moveSpeed: float
 
 # Bonus
 @export var bonus_item_scene: PackedScene
-@export var drop_chance: float = 1 #1.0/5.0
+@export var drop_chance: float = 1.0/5.0
 
 func UpdateHealthBar() -> void:
 	healthbar.max_value = maxPv

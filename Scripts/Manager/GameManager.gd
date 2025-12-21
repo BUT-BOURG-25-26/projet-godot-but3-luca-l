@@ -1,5 +1,7 @@
 extends Node
 
+signal game_level_changed(new_level: int)
+
 var score: int = 0
 var gameOver: bool = false
 var isLevelEnd: bool = false
@@ -15,12 +17,14 @@ const RANGE_ENEMY_START_LEVEL := 5
 const BOSS_START_LEVEL := 10
 
 @export var start_directly_at_range_wave: bool = false
-@export var start_directly_at_boss_wave: bool = true
+@export var start_directly_at_boss_wave: bool = false
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	enemySpawner = get_tree().get_first_node_in_group("EnemySpawner")
 	SetNextUpgradeLevel()
+	# Ensure listeners (e.g. background music) can initialize from the current level.
+	game_level_changed.emit(gameLevel)
 	# Defer to ensure EnemySpawner finished its own _ready().
 	if start_directly_at_boss_wave:
 		call_deferred("_start_at_boss_wave")
@@ -43,7 +47,10 @@ func _start_at_boss_wave() -> void:
 func _initialize_game_at_level(target_level: int) -> void:
 	if enemySpawner == null:
 		return
+	var previous_level := gameLevel
 	gameLevel = max(1, target_level)
+	if gameLevel != previous_level:
+		game_level_changed.emit(gameLevel)
 
 	# Approximate progression by applying difficulty steps up to the target level.
 	GameDifficulty.UpdateMaxStats()
@@ -76,6 +83,7 @@ func EndOfLevel() -> void:
 
 func StartNextLevel() -> void:
 	gameLevel += 1
+	game_level_changed.emit(gameLevel)
 	enemySpawner.currentEnemyNumber = 0
 	enemySpawner.numberOfBoss = 0
 	

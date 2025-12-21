@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bo4ecv7eafkiq"
+path="res://.godot/imported/Steel Resolve.mp3-23e498163a6658ab1f078036c69b0e97.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sons/Steel Resolve.mp3"
+dest_files=["res://.godot/imported/Steel Resolve.mp3-23e498163a6658ab1f078036c69b0e97.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

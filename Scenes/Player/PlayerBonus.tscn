@@ -573,36 +573,3 @@ skeleton = NodePath("")
 libraries = {
 &"": SubResource("AnimationLibrary_cfrii")
 }
-
-[node name="AttackSpeedBoost" type="Node3D" parent="."]
-transform = Transform3D(-1.3113417e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.3113417e-08, 0, 0.735, 0)
-
-[node name="Sketchfab_model" type="Node3D" parent="AttackSpeedBoost"]
-transform = Transform3D(1, 0, 0, 0, 2.220446e-16, 1, 0, -1, 2.220446e-16, 0, 0, 0)
-
-[node name="8673c45c4f264ed6b1e5944fe4b8d4f9_fbx" type="Node3D" parent="AttackSpeedBoost/Sketchfab_model"]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
-
-[node name="Object_2" type="Node3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx"]
-
-[node name="RootNode" type="Node3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx/Object_2"]
-
-[node name="AU_GRP" type="Node3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx/Object_2/RootNode"]
-
-[node name="AU_Base" type="Node3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx/Object_2/RootNode/AU_GRP"]
-transform = Transform3D(2.4707065, 0, 0, 0, 0, -2.4707065, 0, 0.49553525, 0, 0, 0, 0)
-
-[node name="AU_Base_AU_Base_MAT_0" type="MeshInstance3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx/Object_2/RootNode/AU_GRP/AU_Base"]
-mesh = SubResource("ArrayMesh_shir5")
-skeleton = NodePath("")
-
-[node name="AU_Display" type="Node3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx/Object_2/RootNode/AU_GRP"]
-
-[node name="AU_Display_AU_Display_MAT_0" type="MeshInstance3D" parent="AttackSpeedBoost/Sketchfab_model/8673c45c4f264ed6b1e5944fe4b8d4f9_fbx/Object_2/RootNode/AU_GRP/AU_Display"]
-mesh = SubResource("ArrayMesh_dp6mq")
-skeleton = NodePath("")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="AttackSpeedBoost"]
-libraries = {
-&"": SubResource("AnimationLibrary_cfrii")
-}

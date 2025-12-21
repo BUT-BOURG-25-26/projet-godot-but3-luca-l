@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbon1xdxb2bha"]
+
+[ext_resource type="Script" uid="uid://jc2c1r1ermlw" path="res://Scripts/UI/StartMenu.gd" id="1_c5u6n"]
+
+[node name="StartMenu" type="CanvasLayer"]
+script = ExtResource("1_c5u6n")
+
+[node name="Control" type="Control" parent="."]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+process_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="TopButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Play"
+
+[node name="BottomButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Quit"
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/TopButton" to="." method="onPlayButtonPressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/BottomButton" to="." method="onQuitButtonPressed"]

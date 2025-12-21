@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
-[ext_resource type="PackedScene" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
+[ext_resource type="PackedScene" uid="uid://c6xfhrkl1cqr7" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://dya16vgcd0f5e" path="res://Scenes/Enemy/RangeEnemy.tscn" id="2_xwjbm"]
 [ext_resource type="PackedScene" uid="uid://q3eggwev5rag" path="res://Scenes/Enemy/BossEnemy.tscn" id="3_rhmiw"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]

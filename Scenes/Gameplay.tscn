@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=16 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://q3eggwev5rag" path="res://Scenes/Enemy/BossEnemy.tscn" id="3_rhmiw"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
+[ext_resource type="PackedScene" uid="uid://bj6iljmlp1txu" path="res://Scenes/UI/GameUI.tscn" id="5_cfeic"]
 [ext_resource type="Script" uid="uid://b36yw3gk2g236" path="res://Scripts/Map/InfiniteMapGenerator.gd" id="5_uotjs"]
+[ext_resource type="PackedScene" uid="uid://b50qmvho4cnuj" path="res://Scenes/UI/pauseMenu.tscn" id="5_w5l26"]
 [ext_resource type="PackedScene" uid="uid://cacea55pfqot5" path="res://Scenes/Maps/Map1.tscn" id="6_vu60g"]
 [ext_resource type="PackedScene" uid="uid://pg8x4qt3byri" path="res://Scenes/Maps/Map2.tscn" id="7_vu60g"]
 
@@ -31,6 +33,10 @@ bossEnemy = ExtResource("3_rhmiw")
 [node name="UI" type="Node3D" parent="."]
 
 [node name="LevelUpMenu" parent="UI" groups=["LevelUpMenu"] instance=ExtResource("2_u8j7u")]
+
+[node name="PauseMenu" parent="UI" groups=["PauseMenu"] instance=ExtResource("5_w5l26")]
+
+[node name="GameUi" parent="UI" groups=["GameUI"] instance=ExtResource("5_cfeic")]
 
 [node name="Map" type="Node3D" parent="."]
 script = ExtResource("5_uotjs")

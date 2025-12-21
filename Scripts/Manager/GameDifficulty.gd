@@ -49,6 +49,27 @@ func UpdateMaxStats():
 	bossMaxMeleeDamage = PlayerStatManager.playerMaxHealth * 0.35
 	bossMaxDashDamage = PlayerStatManager.playerMaxHealth * 0.45
 
+func resetData():
+	enemyCurrentSpawnLimit = 1
+	
+	meleeCurrentHealth = 3
+	meleeCurrentMovementSpeed = 3
+	meleeCurrentAttackTiming = 1.75
+	meleeCurrentDammage = 1
+	
+	rangeCurrentHealth = 2
+	rangeCurrentMovementSpeed = 2
+	rangeCurrentAttackTiming = 1.5
+	rangeCurrentDammage = 1
+	rangeCurrentProjectilSpeed = 5
+	
+	bossCurrentHealth = 8
+	bossCurrentMovementSpeed= 4
+	bossCurrentMeleeAttackTiming = 1.5
+	bossCurrentDashAttackTiming = 1.5
+	bossCurrentMeleeDamage = 2.5
+	bossCurrentDashDamage = 3.5
+	
 func IncreaseDifficulty(newLevel: int):
 	UpdateMaxStats()
 	if newLevel %2 == 0:

@@ -32,6 +32,20 @@ var currentMovementSpeed: float = 5
 var isRangeUnlocked: bool = false
 var isAreaUnlocked: bool = false
 
+func resetData():
+	currentHealth = 5
+
+	currentMeleeDammage = 2
+	currentRangeDammage = 1.5
+	currentAreaDammage = 1
+	currentMeleeAttackInterval = 1.5
+	currentRangeAttackInterval = 2
+	currentAreaAttackInterval = 1.75
+	
+	currentMovementSpeed = 5
+	isRangeUnlocked = false
+	isAreaUnlocked = false
+
 func IncreaseMeleeDamage(multiplier: float):
 	currentMeleeDammage = clamp(currentMeleeDammage * (1.0 + multiplier), 0.0, maxMeleeDammage)
 

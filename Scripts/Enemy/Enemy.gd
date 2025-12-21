@@ -28,6 +28,7 @@ func TakeDammage(damageTaken: float) -> void:
 	else:
 		if randf() < drop_chance:
 			spawn_bonus()
+		GameManager.UpdateScore(1)
 		queue_free()
 	return
 

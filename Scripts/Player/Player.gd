@@ -112,6 +112,7 @@ func TakeDammage(dammage: int) -> void:
 	else:
 		currentPv = 0
 		healthbar.update(currentPv)
+		GameManager.gameOver = true
 	return
 
 func meleeAttack() -> void:

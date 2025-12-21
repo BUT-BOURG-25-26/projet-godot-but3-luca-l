@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbon1xdxb2bha"]
+[gd_scene load_steps=3 format=3 uid="uid://cbon1xdxb2bha"]
 
 [ext_resource type="Script" uid="uid://jc2c1r1ermlw" path="res://Scripts/UI/StartMenu.gd" id="1_c5u6n"]
+[ext_resource type="StyleBox" uid="uid://cl7n1v07gyide" path="res://Assets/Style/buttonStyle.tres" id="2_ao12g"]
 
 [node name="StartMenu" type="CanvasLayer"]
 script = ExtResource("1_c5u6n")
@@ -38,12 +39,22 @@ custom_minimum_size = Vector2(400, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_font_sizes/font_size = 25
+theme_override_styles/focus = ExtResource("2_ao12g")
+theme_override_styles/hover = ExtResource("2_ao12g")
+theme_override_styles/pressed = ExtResource("2_ao12g")
+theme_override_styles/normal = ExtResource("2_ao12g")
 text = "Play"
 
 [node name="BottomButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(400, 150)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 25
+theme_override_styles/focus = ExtResource("2_ao12g")
+theme_override_styles/hover = ExtResource("2_ao12g")
+theme_override_styles/pressed = ExtResource("2_ao12g")
+theme_override_styles/normal = ExtResource("2_ao12g")
 text = "Quit"
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/TopButton" to="." method="onPlayButtonPressed"]

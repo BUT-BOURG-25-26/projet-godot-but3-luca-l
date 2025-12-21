@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://kaxyagbwhk80"]
+
+[ext_resource type="FontFile" uid="uid://dm3k0wkpbkpcu" path="res://Assets/Fonts/Kanit/Kanit-Bold.ttf" id="1_5p6kr"]
+
+[resource]
+default_font = ExtResource("1_5p6kr")
+default_font_size = 20

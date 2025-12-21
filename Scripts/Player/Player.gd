@@ -133,14 +133,17 @@ func meleeAttack() -> void:
 
 	# Spawn attaque
 	var meleeAttack = meleeAttackScene.instantiate()
-	var attack_distance: float = 1.17
-	var forward := global_transform.basis.z.normalized()
+	var attack_distance: float = 1.4
+	# Godot considère -Z comme l'avant.
+	var forward := (-global_transform.basis.z).normalized()
 	if forward == Vector3.ZERO:
-		forward = Vector3.BACK
-	var spawn_position := global_position + forward * attack_distance
+		forward = Vector3.FORWARD
 	add_child(meleeAttack)
-	meleeAttack.global_position = spawn_position
-	meleeAttack.look_at(spawn_position + forward, Vector3.UP)
+	# Place l'attaque devant le player (dans son repère local) + un léger offset Y
+	# pour éviter que le volume traverse le corps.
+	meleeAttack.position = Vector3(0.0, 0, attack_distance + 3.0)
+	if meleeAttack.has_method("set_attack_direction"):
+		meleeAttack.call("set_attack_direction", -forward)
 	meleeAttack.damage = meleeDamage
 
 	if animation_controller and !melee_anim_played:

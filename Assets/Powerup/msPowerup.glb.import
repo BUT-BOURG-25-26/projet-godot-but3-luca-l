@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bha13v3hdlang"
-path="res://.godot/imported/heart.glb-9296f6f4f5ee5bfb113887fcd9f11d5d.scn"
+uid="uid://dkfkmy6oui42x"
+path="res://.godot/imported/msPowerup.glb-e9dc454ac4da90edcfb23ca965507ede.scn"
 
 [deps]
 
-source_file="res://Assets/heart.glb"
-dest_files=["res://.godot/imported/heart.glb-9296f6f4f5ee5bfb113887fcd9f11d5d.scn"]
+source_file="res://Assets/Powerup/msPowerup.glb"
+dest_files=["res://.godot/imported/msPowerup.glb-e9dc454ac4da90edcfb23ca965507ede.scn"]
 
 [params]
 

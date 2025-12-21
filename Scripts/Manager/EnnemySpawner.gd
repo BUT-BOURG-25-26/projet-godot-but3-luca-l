@@ -1,7 +1,6 @@
 class_name EnemySpawner
 extends Node3D
 
-# IMPORTANT : Mettre le spawnLimit dans GameManager plus tard
 var spawnLimit: int = GameDifficulty.enemyCurrentSpawnLimit
 var currentEnemyNumber: int = 0
 
@@ -22,7 +21,6 @@ var currentEnemyNumber: int = 0
 
 var player: Player
 
-# IMPORTANT : Changer pour faire spawn les enemies en dehors de la vue du joueur
 var minSpawnRadius: float = 4.0 
 var maxSpawnRadius: float = 12.0
 
@@ -31,8 +29,12 @@ var numberOfBoss: int = 0
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
+	
+	MeleeSpawnTimer.one_shot = false 
+	RangeSpawnTimer.one_shot = false
 	MeleeSpawnTimer.timeout.connect(SpawnEnnemy.bind(meleeEnemy))
 	RangeSpawnTimer.timeout.connect(SpawnEnnemy.bind(rangeEnemy))
+	
 	EnableMeleeSpawn()
 
 func EnableMeleeSpawn():
@@ -57,6 +59,7 @@ func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	currentEnemyNumber += 1
 	var enemy = ennemyToSpawn.instantiate()
 	enemy.add_to_group("Enemy")
+	enemy.position = Vector3(0, -100, 0)
 	add_child(enemy)
 	SpawnPosition(enemy)
 
@@ -66,15 +69,15 @@ func StopSpawners():
 	BossSpawnTimer.stop()
 
 func SpawnPosition(enemy: CharacterBody3D) -> void:
-	if player and enemy is CharacterBody3D:
-		var angle = randf() * TAU 
+	if not player:
+		return
 
-		var distance = randf_range(minSpawnRadius, maxSpawnRadius)
+	var angle = randf() * TAU 
+	var distance = randf_range(minSpawnRadius, maxSpawnRadius)
 
-		var offset_x = cos(angle) * distance
-		var offset_z = sin(angle) * distance
+	var offset_x = cos(angle) * distance
+	var offset_z = sin(angle) * distance
 
-		var spawn_pos = player.global_position + Vector3(offset_x, 0.0, offset_z)
-		
-		enemy.global_position = spawn_pos
-		enemy.look_at(player.global_position, Vector3.UP)
+	var spawn_pos = player.global_position + Vector3(offset_x, 1.0, offset_z)
+	enemy.global_position = spawn_pos
+	enemy.look_at(player.global_position, Vector3.UP)

@@ -38,7 +38,7 @@ corner_radius_bottom_left = 10
 
 [node name="MeleeEnemy" type="CharacterBody3D"]
 collision_layer = 4
-collision_mask = 11
+collision_mask = 15
 script = ExtResource("1_hbcc1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

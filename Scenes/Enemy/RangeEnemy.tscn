@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="1_s0ejs"]
 [ext_resource type="Material" uid="uid://c1vgtjis674jg" path="res://Materials/RedMat.tres" id="1_x8ngp"]
-[ext_resource type="Script" uid="uid://cvf4j70484pef" path="res://Scripts/Enemy/RangeEnemy.gd" id="1_yyph7"]
+[ext_resource type="Script" path="res://Scripts/Enemy/RangeEnemy.gd" id="1_yyph7"]
 [ext_resource type="PackedScene" uid="uid://d1p4ond8xy135" path="res://Scenes/Attack/RangeAttack.tscn" id="2_o0rqa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8ngp"]
+size = Vector3(1, 1.29407, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_kupyg"]
 viewport_path = NodePath("HealthBarSprite/SubViewport")
@@ -39,7 +40,7 @@ corner_radius_bottom_left = 10
 
 [node name="RangeEnemy" type="CharacterBody3D"]
 collision_layer = 4
-collision_mask = 11
+collision_mask = 15
 script = ExtResource("1_yyph7")
 rangeAttackScene = ExtResource("2_o0rqa")
 
@@ -47,6 +48,7 @@ rangeAttackScene = ExtResource("2_o0rqa")
 material_override = ExtResource("1_x8ngp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.147034, 0)
 shape = SubResource("BoxShape3D_x8ngp")
 
 [node name="Timers" type="Node" parent="."]

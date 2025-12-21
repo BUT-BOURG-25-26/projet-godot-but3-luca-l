@@ -125,8 +125,6 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	else:
-		velocity.y = 0
 
 	if move_inputs != Vector2.ZERO:
 		var direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()

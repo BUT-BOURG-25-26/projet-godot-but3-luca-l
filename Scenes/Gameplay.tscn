@@ -1,14 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://dmjbg6r7aoiuu"]
+[gd_scene load_steps=14 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
-[ext_resource type="PackedScene" uid="uid://c6xfhrkl1cqr7" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
 [ext_resource type="PackedScene" uid="uid://dya16vgcd0f5e" path="res://Scenes/Enemy/RangeEnemy.tscn" id="2_xwjbm"]
 [ext_resource type="PackedScene" uid="uid://q3eggwev5rag" path="res://Scenes/Enemy/BossEnemy.tscn" id="3_rhmiw"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
 [ext_resource type="Script" uid="uid://b36yw3gk2g236" path="res://Scripts/Map/InfiniteMapGenerator.gd" id="5_uotjs"]
-[ext_resource type="PackedScene" uid="uid://cacea55pfqot5" path="res://Scenes/Maps/TestMap1.tscn" id="6_vu60g"]
+[ext_resource type="PackedScene" uid="uid://cacea55pfqot5" path="res://Scenes/Maps/Map1.tscn" id="6_vu60g"]
+[ext_resource type="PackedScene" uid="uid://pg8x4qt3byri" path="res://Scenes/Maps/Map2.tscn" id="7_vu60g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -33,7 +34,7 @@ bossEnemy = ExtResource("3_rhmiw")
 
 [node name="Map" type="Node3D" parent="."]
 script = ExtResource("5_uotjs")
-chunk_scenes = Array[PackedScene]([ExtResource("6_vu60g")])
+chunk_scenes = Array[PackedScene]([ExtResource("6_vu60g"), ExtResource("7_vu60g")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
 environment = SubResource("Environment_yijg0")
@@ -47,7 +48,7 @@ action_down = "Down"
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.708352, 0.705859, 0, -0.705859, 0.708352, 0.8, 6, 6.7)
 script = ExtResource("4_ovofm")
-offset = Vector3(0.5, 4.5, 5)
+offset = Vector3(0.5, 4, 4.5)
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1_yijg0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08191, 0)

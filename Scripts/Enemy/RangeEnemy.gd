@@ -171,39 +171,30 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func TakeDammage(damageTaken: float) -> void:
-	if _is_dead:
-		return
-
-	if currentPv - damageTaken > 0:
-		currentPv -= damageTaken
-		if healthbar:
-			healthbar.update(currentPv)
-		return
-
-	currentPv = 0
-	if healthbar:
-		healthbar.update(currentPv)
-	_die()
+	super.TakeDammage(damageTaken)
+	super.UpdateHealthBar()
 
 func _die() -> void:
 	if _is_dead:
 		return
 	_is_dead = true
+	
+	currentPv = 0
+	healthbar.update(currentPv)
+	if randf() < drop_chance:
+		spawn_bonus()
+
 	_death_token += 1
 	var token := _death_token
 
-	# Cancel any pending animation stop callbacks from ranged attacks.
 	_range_attack_anim_token += 1
 
-	# Stop attacks.
 	if rangeAttackTimer:
 		rangeAttackTimer.stop()
 
-	# Disable collisions so it doesn't keep interacting while dead.
 	collision_layer = 0
 	collision_mask = 0
 
-	# Stop all animations and play death.
 	if _anim_player != null and _anim_player.has_animation(DEATH_ANIM):
 		_anim_player.stop()
 		var anim: Animation = _anim_player.get_animation(DEATH_ANIM)
@@ -211,7 +202,6 @@ func _die() -> void:
 			anim.loop_mode = Animation.LOOP_NONE
 		_anim_player.play(DEATH_ANIM)
 
-	# Keep visibility for a short time, then remove.
 	get_tree().create_timer(DEATH_VISIBILITY_SEC).timeout.connect(func() -> void:
 		if token != _death_token:
 			return

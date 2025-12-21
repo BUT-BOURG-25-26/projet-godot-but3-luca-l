@@ -23,6 +23,7 @@ var pushup_anim_available := false
 var _pushup_sequence_running := false
 var pushup_cycles_target := 3
 var _remaining_pushups := 0
+var _external_animation_lock := false
 
 func setup(anim_player: AnimationPlayer) -> void:
 	animation_player = anim_player
@@ -35,6 +36,23 @@ func setup(anim_player: AnimationPlayer) -> void:
 	_init_melee_animation()
 	_init_movement_animations()
 	_init_pushup_animations()
+
+func set_animation_lock(locked: bool) -> void:
+	_external_animation_lock = locked
+	if locked:
+		cancel_all()
+
+func is_animation_locked() -> bool:
+	return _external_animation_lock
+
+func cancel_all() -> void:
+	_clear_melee_cutoff_timer()
+	_melee_anim_running = false
+	_pushup_sequence_running = false
+	_remaining_pushups = 0
+	_current_movement_anim = ""
+	if animation_player:
+		animation_player.stop()
 
 func update_melee_interval(interval: float) -> void:
 	if !melee_anim_available:
@@ -50,6 +68,8 @@ func is_pushup_active() -> bool:
 	return _pushup_sequence_running
 
 func try_play_melee_attack(interval: float) -> bool:
+	if _external_animation_lock:
+		return false
 	if !melee_anim_available or animation_player == null or _melee_anim_running or _pushup_sequence_running:
 		return false
 	update_melee_interval(interval)
@@ -65,6 +85,8 @@ func reset_melee_attack_state() -> void:
 
 func trigger_pushup_sequence() -> bool:
 	if animation_player == null:
+		return false
+	if _external_animation_lock:
 		return false
 	if _pushup_sequence_running or _melee_anim_running:
 		return false
@@ -110,6 +132,8 @@ func _init_pushup_animations() -> void:
 func update_movement_animation(is_moving: bool, move_speed: float) -> void:
 	if animation_player == null:
 		return
+	if _external_animation_lock:
+		return
 	if _melee_anim_running or _pushup_sequence_running:
 		return
 	var target_anim := ""
@@ -129,6 +153,8 @@ func update_movement_animation(is_moving: bool, move_speed: float) -> void:
 	_current_movement_anim = target_anim
 
 func _on_animation_finished(anim_name: StringName) -> void:
+	if _external_animation_lock:
+		return
 	if anim_name == MELEE_ANIM_NAME:
 		_finish_melee_animation()
 		return

@@ -301,49 +301,46 @@ func end_dash_attack():
 	get_tree().create_timer(0.25).timeout.connect(func(): current_state = State.CHASE)
 
 func TakeDammage(damageTaken: float) -> void:
-	if _is_dead:
-		return
-
-	if currentPv - damageTaken > 0:
-		currentPv -= damageTaken
-		if healthbar:
-			healthbar.update(currentPv)
-		return
-
-	currentPv = 0
-	if healthbar:
-		healthbar.update(currentPv)
-	_die()
+	super.TakeDammage(damageTaken)
+	super.UpdateHealthBar()
 
 func _die() -> void:
 	if _is_dead:
 		return
 	_is_dead = true
+	
+	currentPv = 0
+	healthbar.update(currentPv)
+	if randf() < drop_chance:
+		spawn_bonus()
+
 	_death_token += 1
 	var token := _death_token
 
-	# Stop AI + movement
-	current_state = State.STUNNED
+	if "current_state" in self: 
+		current_state = State.STUNNED
 	velocity = Vector3.ZERO
 
-	# Stop timers/attacks
 	if is_instance_valid(meleeAttackTimer):
 		meleeAttackTimer.stop()
-	if is_instance_valid(dashAttackTimer):
+
+	if "dashAttackTimer" in self and is_instance_valid(dashAttackTimer):
 		dashAttackTimer.stop()
-	if is_instance_valid(chaseDurationTimer):
+	if "chaseDurationTimer" in self and is_instance_valid(chaseDurationTimer):
 		chaseDurationTimer.stop()
 
-	# Disable collisions while dying
 	collision_layer = 0
 	collision_mask = 0
-	if is_instance_valid(_dynamic_hitbox):
+
+	if "_dynamic_hitbox" in self and is_instance_valid(_dynamic_hitbox):
 		_dynamic_hitbox.collision_layer = 0
 		_dynamic_hitbox.collision_mask = 0
 
-	# Stop all animations and play death
-	_update_walk_animation(false)
-	var death_time := DEATH_FALLBACK_SEC
+	if has_method("_update_walk_animation"):
+		_update_walk_animation(false)
+		
+	var death_time := 2.5 
+	
 	if _anim_player != null and _anim_player.has_animation(DEATH_ANIM):
 		_anim_player.stop()
 		var anim: Animation = _anim_player.get_animation(DEATH_ANIM)

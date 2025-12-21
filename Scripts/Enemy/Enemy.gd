@@ -15,7 +15,7 @@ var moveSpeed: float
 
 # Bonus
 @export var bonus_item_scene: PackedScene
-@export var drop_chance: float = 1.0/5.0
+@export var drop_chance: float = 1 #1.0/5.0
 
 func UpdateHealthBar() -> void:
 	healthbar.max_value = maxPv
@@ -26,10 +26,15 @@ func TakeDammage(damageTaken: float) -> void:
 		currentPv -= damageTaken
 		healthbar.update(currentPv)
 	else:
-		if randf() < drop_chance:
-			spawn_bonus()
-		queue_free()
+		_die()
 	return
+
+func _die() -> void:
+	currentPv = 0
+	healthbar.update(currentPv)
+	if randf() < drop_chance:
+		spawn_bonus()
+	queue_free()
 
 # Overide a chaque type d'enemy
 func InitStat():

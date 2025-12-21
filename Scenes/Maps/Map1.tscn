@@ -3,7 +3,7 @@
 [ext_resource type="Material" uid="uid://cg0avy2hauws0" path="res://Materials/Ground/Parquet1/Ground1.tres" id="1_66ww1"]
 [ext_resource type="Texture2D" uid="uid://dyf6svkers2we" path="res://Assets/Gym/Equipment/gym_equipment_0.png" id="2_3atk3"]
 [ext_resource type="Material" uid="uid://dw2plq51qta4x" path="res://Materials/Ground/GymGround/gym_ground.tres" id="2_bp0wf"]
-[ext_resource type="PackedScene" uid="uid://bv72u5j6kwoo" path="res://Assets/deadlift_box.tscn" id="3_bp0wf"]
+[ext_resource type="PackedScene" path="res://Assets/deadlift_box.tscn" id="3_bp0wf"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_cdbqk"]
 size = Vector2(50, 50)
@@ -202,6 +202,7 @@ shadow_mesh = SubResource("ArrayMesh_fr84k")
 size = Vector3(5.87354, 3.92822, 2.07263)
 
 [node name="Map1" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="Ground" type="StaticBody3D" parent="."]
 collision_mask = 15

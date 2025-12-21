@@ -47,6 +47,10 @@ var areaAttack: Node3D
 var animation_controller: PlayerAnimationController
 const PUSH_UP_ACTION := "PushUp"
 
+const NUKE_EMOTE_ANIM: StringName = &"Fortnite_dance"
+const NUKE_EMOTE_SPEED: float = 1.5
+var _nuke_emote_active: bool = false
+
 const PLAYER_RANGE_ATTACK_PATH := "res://Scenes/Attack/RangedAttackPlayer.tscn"
 
 func _ready() -> void:
@@ -56,6 +60,8 @@ func _ready() -> void:
 	animation_controller = PlayerAnimationController.new()
 	add_child(animation_controller)
 	animation_controller.setup(anim_player)
+	if anim_player and !anim_player.animation_finished.is_connected(_on_player_animation_finished):
+		anim_player.animation_finished.connect(_on_player_animation_finished)
 	
 	UpdateStats()
 	PlayerStatManager.signalStatsUpdated.connect(UpdateStats)
@@ -125,6 +131,8 @@ func SetAttackIntervals():
 		areaAttack.attackTimer.wait_time = safe_area_interval
 
 func TakeDammage(dammage: int) -> void:
+	if _nuke_emote_active:
+		return
 	if currentPv - dammage > 0:
 		currentPv -= dammage
 		healthbar.update(currentPv)
@@ -134,6 +142,8 @@ func TakeDammage(dammage: int) -> void:
 	return
 
 func meleeAttack() -> void:
+	if _nuke_emote_active:
+		return
 	if animation_controller and (animation_controller.is_melee_attack_active() or animation_controller.is_pushup_active()):
 		return
 
@@ -170,8 +180,19 @@ func rangeAttack() -> void:
 	rangeAttack.damage = rangeDamage
 	rangeAttack.isEnemyATarget = true
 	rangeAttack.InitTargetToAttack()
+	
 
 func _physics_process(delta: float) -> void:
+	if _nuke_emote_active:
+		move_inputs = Vector2.ZERO
+		# Keep gravity, but prevent player-driven movement.
+		if !is_on_floor():
+			velocity.y = get_gravity().y
+		velocity.x = move_toward(velocity.x, 0, moveSpeed)
+		velocity.z = move_toward(velocity.z, 0, moveSpeed)
+		move_and_slide()
+		return
+
 	if animation_controller and Input.is_action_just_pressed(PUSH_UP_ACTION):
 		animation_controller.trigger_pushup_sequence()
 	read_move_inputs()
@@ -180,22 +201,48 @@ func _physics_process(delta: float) -> void:
 		move_inputs = Vector2.ZERO
 	else:
 		move_inputs *= moveSpeed * delta
-	var is_moving := move_inputs != Vector2.ZERO
-	
 	if !is_on_floor():
 		velocity.y = get_gravity().y
 	
+	var is_moving := move_inputs != Vector2.ZERO
 	if is_moving:
-		global_position += Vector3(move_inputs.x, 0.0, move_inputs.y)
-		var look_direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()
-		# Godot considère -Z comme l'avant, donc on inverse pour garder le modèle aligné avec le déplacement
-		look_at(global_position - look_direction, Vector3.UP)
+		var direction = Vector3(move_inputs.x, 0, move_inputs.y).normalized()
+		velocity.x = direction.x * moveSpeed
+		velocity.z = direction.z * moveSpeed
 		
-	rotation_degrees.x = 0
-	rotation_degrees.z = 0 
+		look_at(global_position + direction, Vector3.UP)
+		rotate_y(deg_to_rad(180))
+		rotation_degrees.x = 0
+		rotation_degrees.z = 0 
+	else:
+		velocity.x = move_toward(velocity.x, 0, moveSpeed)
+		velocity.z = move_toward(velocity.z, 0, moveSpeed)
+	move_and_slide()
 
 	if animation_controller:
 		animation_controller.update_movement_animation(is_moving, moveSpeed)
+
+func _start_nuke_emote() -> void:
+	if anim_player == null or !anim_player.has_animation(NUKE_EMOTE_ANIM):
+		return
+	_set_nuke_emote_active(true)
+	if animation_controller:
+		animation_controller.set_animation_lock(true)
+	anim_player.play(NUKE_EMOTE_ANIM, -1.0, NUKE_EMOTE_SPEED)
+	anim_player.seek(0.0, true)
+
+func _set_nuke_emote_active(active: bool) -> void:
+	_nuke_emote_active = active
+	# Keep player visible; only movement/animations/damage are affected.
+
+func _on_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name != NUKE_EMOTE_ANIM:
+		return
+	if !_nuke_emote_active:
+		return
+	_set_nuke_emote_active(false)
+	if animation_controller:
+		animation_controller.set_animation_lock(false)
 
 func read_move_inputs():
 	move_inputs.x = Input.get_action_strength("Right") - Input.get_action_strength("Left")
@@ -207,7 +254,7 @@ func ApplyBonus(type: BonusItem.BonusType) -> void:
 	if active_bonuses.has(type):
 		return 
 
-	print("Nouveau Bonus activé : ", type)
+	print("Nouveau Bonus activÃ© : ", type)
 	
 	match type:
 		BonusItem.BonusType.HEAL:
@@ -249,6 +296,7 @@ func ApplyBonus(type: BonusItem.BonusType) -> void:
 						enemy.TakeDammage(enemy.currentPv * 0.25)
 					else:
 						enemy.TakeDammage(99999)
+			_start_nuke_emote()
 
 func start_stackable_bonus(type: BonusItem.BonusType, apply_fn: Callable, reset_fn: Callable):
 	active_bonuses.append(type)

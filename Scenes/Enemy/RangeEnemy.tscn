@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dya16vgcd0f5e"]
+[gd_scene load_steps=10 format=3 uid="uid://dya16vgcd0f5e"]
 
 [ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="1_s0ejs"]
 [ext_resource type="Material" uid="uid://c1vgtjis674jg" path="res://Materials/RedMat.tres" id="1_x8ngp"]
 [ext_resource type="Script" path="res://Scripts/Enemy/RangeEnemy.gd" id="1_yyph7"]
 [ext_resource type="PackedScene" uid="uid://d1p4ond8xy135" path="res://Scenes/Attack/RangeAttack.tscn" id="2_o0rqa"]
+[ext_resource type="PackedScene" uid="uid://cx0x72ra718gr" path="res://Scenes/Player/PlayerBonus.tscn" id="3_o0rqa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8ngp"]
 size = Vector3(1, 1.29407, 1)
@@ -43,6 +44,7 @@ collision_layer = 4
 collision_mask = 15
 script = ExtResource("1_yyph7")
 rangeAttackScene = ExtResource("2_o0rqa")
+bonus_item_scene = ExtResource("3_o0rqa")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 material_override = ExtResource("1_x8ngp")

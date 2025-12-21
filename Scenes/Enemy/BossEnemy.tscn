@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://q3eggwev5rag"]
+[gd_scene load_steps=9 format=3 uid="uid://q3eggwev5rag"]
 
 [ext_resource type="Material" uid="uid://ympx0ivtocb1" path="res://Materials/GreenMat.tres" id="1_rk24o"]
-[ext_resource type="Script" uid="uid://b1xlgewh1aday" path="res://Scripts/Enemy/BossEnemy.gd" id="1_rpf5i"]
+[ext_resource type="Script" path="res://Scripts/Enemy/BossEnemy.gd" id="1_rpf5i"]
+[ext_resource type="PackedScene" uid="uid://cx0x72ra718gr" path="res://Scenes/Player/PlayerBonus.tscn" id="2_htofk"]
 [ext_resource type="Script" uid="uid://6coe3251o8x8" path="res://Scripts/UI/progressbar.gd" id="2_wit8q"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wit8q"]
@@ -41,6 +42,7 @@ corner_radius_bottom_left = 10
 collision_layer = 4
 collision_mask = 11
 script = ExtResource("1_rpf5i")
+bonus_item_scene = ExtResource("2_htofk")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 material_override = ExtResource("1_rk24o")

@@ -7,13 +7,19 @@ var healthbar: ProgressBar
 # Gameplay
 var move_inputs: Vector2
 
+#Bonus
+var active_bonuses: Array[BonusItem.BonusType] = []
+var bonus_speed_mult: float = 1.0
+var bonus_damage_mult: float = 1.0
+var bonus_attack_speed_mult: float = 1.0
+
 # Stats
 var meleeDamage: float
 var rangeDamage: float
 var areaDamage: float
 
 var maxPv: float 
-var currentPv: float 
+var currentPv: float = 0 
 var moveSpeed: float
 
 # Attack Timer
@@ -35,6 +41,8 @@ func _ready() -> void:
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
 	
 	UpdateStats()
+	currentPv = maxPv
+	UpdateHealthBar()
 	PlayerStatManager.signalStatsUpdated.connect(UpdateStats)
 	SetAttackIntervals()
 	
@@ -58,21 +66,25 @@ func UpdateHealthBar():
 	healthbar.update(currentPv)
 
 func UpdateStats():
+	var oldMaxPv = maxPv
 	maxPv = PlayerStatManager.currentHealth
-	currentPv = maxPv
+	currentPv += maxPv - oldMaxPv
 	UpdateHealthBar()
 	
-	meleeDamage = PlayerStatManager.currentMeleeDammage
-	rangeDamage = PlayerStatManager.currentRangeDammage
-	areaDamage = PlayerStatManager.currentAreaDammage
+	meleeDamage = PlayerStatManager.currentMeleeDammage * bonus_damage_mult
+	rangeDamage = PlayerStatManager.currentRangeDammage * bonus_damage_mult
+	areaDamage = PlayerStatManager.currentAreaDammage * bonus_damage_mult
 	
-	meleeAttackInterval = PlayerStatManager.currentMeleeAttackInterval
+	meleeAttackInterval = PlayerStatManager.currentMeleeAttackInterval / bonus_attack_speed_mult
 	rangeAttackInterval = PlayerStatManager.currentRangeAttackInterval
+	
 	if areaAttack:
 		areaAttackInterval = PlayerStatManager.currentAreaAttackInterval
+		
 	SetAttackIntervals()
 	
-	moveSpeed = PlayerStatManager.currentMovementSpeed
+	moveSpeed = PlayerStatManager.currentMovementSpeed * bonus_speed_mult
+	
 	print(
 	"[Player]",
 	"| Melee:", meleeDamage,
@@ -144,3 +156,58 @@ func read_move_inputs():
 	move_inputs.x = Input.get_action_strength("Right") - Input.get_action_strength("Left")
 	move_inputs.y = Input.get_action_strength("Down") - Input.get_action_strength("Up")
 	move_inputs = move_inputs.normalized()
+
+
+func ApplyBonus(type: BonusItem.BonusType) -> void:
+	if active_bonuses.has(type):
+		return 
+
+	print("Nouveau Bonus activé : ", type)
+	
+	match type:
+		BonusItem.BonusType.HEAL:
+			currentPv = min(currentPv + (maxPv * 0.25), maxPv)
+			UpdateHealthBar()
+
+		BonusItem.BonusType.SUPER_SPEED:
+			start_stackable_bonus(type, func(): 
+				bonus_speed_mult *= 2.0
+				UpdateStats()
+			, func():
+				bonus_speed_mult /= 2.0
+				UpdateStats()
+			)
+
+		BonusItem.BonusType.SUPER_ATTACK_SPEED:
+			start_stackable_bonus(type, func(): 
+				bonus_attack_speed_mult *= 2.0
+				UpdateStats()
+			, func():
+				bonus_attack_speed_mult /= 2.0
+				UpdateStats()
+			)
+
+		BonusItem.BonusType.SUPER_DAMAGE:
+			start_stackable_bonus(type, func():
+				bonus_damage_mult *= 2.0
+				UpdateStats()
+			, func():
+				bonus_damage_mult /= 2.0
+				UpdateStats()
+			)
+
+		BonusItem.BonusType.NUKE:
+			var enemies = get_tree().get_nodes_in_group("Enemy")
+			for enemy in enemies:
+				if is_instance_valid(enemy) and enemy.has_method("TakeDammage"):
+					if(enemy is BossEnemy):
+						enemy.TakeDammage(enemy.currentPv * 0.25)
+					else:
+						enemy.TakeDammage(99999)
+
+func start_stackable_bonus(type: BonusItem.BonusType, apply_fn: Callable, reset_fn: Callable):
+	active_bonuses.append(type)
+	apply_fn.call()
+	await get_tree().create_timer(8.0).timeout
+	reset_fn.call()
+	active_bonuses.erase(type)

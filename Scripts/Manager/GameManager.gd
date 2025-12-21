@@ -12,15 +12,19 @@ var enemySpawner: EnemySpawner
 var player: Player
 
 const RANGE_ENEMY_START_LEVEL := 5
+const BOSS_START_LEVEL := 10
 
-@export var start_directly_at_range_wave: bool = true
+@export var start_directly_at_range_wave: bool = false
+@export var start_directly_at_boss_wave: bool = true
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	enemySpawner = get_tree().get_first_node_in_group("EnemySpawner")
 	SetNextUpgradeLevel()
-	if start_directly_at_range_wave:
-		# Defer to ensure EnemySpawner finished its own _ready().
+	# Defer to ensure EnemySpawner finished its own _ready().
+	if start_directly_at_boss_wave:
+		call_deferred("_start_at_boss_wave")
+	elif start_directly_at_range_wave:
 		call_deferred("_start_at_range_enemy_wave")
 
 
@@ -28,6 +32,12 @@ func _start_at_range_enemy_wave() -> void:
 	if !start_directly_at_range_wave:
 		return
 	_initialize_game_at_level(RANGE_ENEMY_START_LEVEL)
+
+
+func _start_at_boss_wave() -> void:
+	if !start_directly_at_boss_wave:
+		return
+	_initialize_game_at_level(BOSS_START_LEVEL)
 
 
 func _initialize_game_at_level(target_level: int) -> void:
@@ -47,6 +57,7 @@ func _initialize_game_at_level(target_level: int) -> void:
 	enemySpawner.EnableMeleeSpawn()
 	if gameLevel >= RANGE_ENEMY_START_LEVEL:
 		enemySpawner.EnableRangeSpawn()
+	# Le boss est géré par EnemySpawner quand le spawnLimit est atteint.
 
 func EndOfLevel() -> void:
 	var enemies = get_tree().get_nodes_in_group("Enemy")

@@ -6,10 +6,19 @@ var speed: float = 15
 var direction: Vector3 = Vector3.FORWARD
 var damage: float
 
+var _has_target: bool = false
+var _spawn_ms: int = 0
+var _max_lifetime_ms: int = 3000
+
+@export var spin_speed_deg_per_sec: float = 720.0
+
+@onready var _spin_node: Node3D = (find_child("Sketchfab_Scene", true, false) as Node3D)
+
 @onready var _anim_player: AnimationPlayer = find_child("AnimationPlayer", true, false) as AnimationPlayer
 var _loop_anim_name: StringName = &""
 
 func _ready():
+	_spawn_ms = Time.get_ticks_msec()
 	body_entered.connect(_on_body_entered)
 	_start_attack_animation_loop()
 
@@ -63,27 +72,52 @@ func InitTargetToAttack() -> void:
 	else:
 		target = find_nearest_player()
 	if target:
+		_has_target = true
 		direction = (target.global_position - global_position).normalized()
 		look_at(target.global_position, Vector3.UP)
 	else:
-		queue_free()
+		_has_target = false
 		direction = -global_transform.basis.z
+		if not isEnemyATarget:
+			queue_free()
 	
 func _on_body_entered(body: Node3D) -> void:
-	if isEnemyATarget && body is Enemy:
+	if isEnemyATarget:
+		if body is Enemy:
+			body.TakeDammage(damage)
+			queue_free()
+			return
+		if body is Player:
+			return
+		# Projectile du joueur : on ignore les collisions non-Enemy pour éviter
+		# de disparaître instantanément (sol, décor, etc.).
+		return
+
+	# Projectile ennemi (cible: Player) : comportement strict comme avant.
+	if body is Player:
 		body.TakeDammage(damage)
 		queue_free()
-	elif !isEnemyATarget && body is Player:
-		body.TakeDammage(damage)
-		queue_free()
-	elif !isEnemyATarget && body is Enemy:
 		return
-	elif isEnemyATarget && body is Player:
+	if body is Enemy:
 		return
-	else:
-		queue_free()
+	queue_free()
 
 func _physics_process(delta):
+	if isEnemyATarget and _spawn_ms != 0 and Time.get_ticks_msec() - _spawn_ms > _max_lifetime_ms:
+		queue_free()
+		return
+
+	if isEnemyATarget:
+		var node_to_spin: Node3D = _spin_node if _spin_node != null else self
+		node_to_spin.rotate_object_local(Vector3(0, 0, 1), deg_to_rad(spin_speed_deg_per_sec) * delta)
+
+	if isEnemyATarget and not _has_target:
+		var target := find_nearest_enemy()
+		if target:
+			_has_target = true
+			direction = (target.global_position - global_position).normalized()
+			look_at(target.global_position, Vector3.UP)
+
 	global_position += direction * speed * delta
 
 func find_nearest_enemy() -> Node3D:

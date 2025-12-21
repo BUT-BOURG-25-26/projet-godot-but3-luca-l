@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody3D
 
+const MIN_TIMER_WAIT_SEC: float = 0.01
+
 # UI
 var healthbar: ProgressBar
 
@@ -28,16 +30,23 @@ var areaAttack: Node3D
 
 # Attack Scenes
 @export var meleeAttackScene: PackedScene
-@export var rangeAttackScene: PackedScene
+@export var rangeAttackScene: PackedScene = preload("res://Scenes/Attack/RangedAttackPlayer.tscn")
 @export var areaAttackScene: PackedScene
+
+@export var range_attack_spawn_height: float = 1.1
+@export var range_attack_spawn_forward: float = 0.35
 
 #Animation 
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 var animation_controller: PlayerAnimationController
 const PUSH_UP_ACTION := "PushUp"
 
+const PLAYER_RANGE_ATTACK_PATH := "res://Scenes/Attack/RangedAttackPlayer.tscn"
+
 func _ready() -> void:
 	healthbar = get_tree().get_first_node_in_group("HealthBar")
+	if rangeAttackScene == null or rangeAttackScene.resource_path != PLAYER_RANGE_ATTACK_PATH:
+		rangeAttackScene = preload(PLAYER_RANGE_ATTACK_PATH)
 	animation_controller = PlayerAnimationController.new()
 	add_child(animation_controller)
 	animation_controller.setup(anim_player)
@@ -59,6 +68,9 @@ func ActivateAreaAttack() -> void:
 	areaAttack = areaAttackScene.instantiate()
 	areaAttack.damage = areaDamage
 	add_child(areaAttack)
+	# `UnlockAreaAttack()` can call this before `signalStatsUpdated` runs, so
+	# our local `areaAttackInterval` may still be 0 here.
+	areaAttackInterval = maxf(MIN_TIMER_WAIT_SEC, PlayerStatManager.currentAreaAttackInterval)
 	SetAttackIntervals()
 
 func UpdateHealthBar():
@@ -96,12 +108,13 @@ func UpdateStats():
 	)
 
 func SetAttackIntervals():
-	meleeAttackTimer.wait_time = meleeAttackInterval
-	rangeAttackTimer.wait_time = rangeAttackInterval 
+	meleeAttackTimer.wait_time = maxf(MIN_TIMER_WAIT_SEC, meleeAttackInterval)
+	rangeAttackTimer.wait_time = maxf(MIN_TIMER_WAIT_SEC, rangeAttackInterval)
 
 	if areaAttack:
-		areaAttack.attackInterval = areaAttackInterval
-		areaAttack.attackTimer.wait_time = areaAttackInterval
+		var safe_area_interval: float = maxf(MIN_TIMER_WAIT_SEC, areaAttackInterval)
+		areaAttack.attackInterval = safe_area_interval
+		areaAttack.attackTimer.wait_time = safe_area_interval
 
 func TakeDammage(dammage: int) -> void:
 	if currentPv - dammage > 0:
@@ -137,7 +150,11 @@ func meleeAttack() -> void:
 func rangeAttack() -> void:
 	var rangeAttack = rangeAttackScene.instantiate()
 	get_parent().add_child(rangeAttack)
-	rangeAttack.global_position = global_position
+	var forward := (-global_transform.basis.z).normalized()
+	if forward == Vector3.ZERO:
+		forward = Vector3.FORWARD
+	var spawn_position := global_position + Vector3.UP * range_attack_spawn_height + forward * range_attack_spawn_forward
+	rangeAttack.global_position = spawn_position
 	rangeAttack.global_rotation = global_rotation
 	rangeAttack.damage = rangeDamage
 	rangeAttack.isEnemyATarget = true

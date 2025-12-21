@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bv72u5j6kwoo"]
+
+[ext_resource type="PackedScene" uid="uid://b2ont4bwamqy5" path="res://Assets/Gym/Barbell/olympic_barbell__plates.glb" id="1_mgwys"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8q8dx"]
+size = Vector3(6.42188, 0.427673, 4.89056)
+
+[node name="DeadliftBox" type="StaticBody3D"]
+collision_mask = 14
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86035, 0.133759, 1.9469)
+size = Vector3(6.45313, 0.442322, 4.8938)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.84766, 0.136627, 1.94528)
+shape = SubResource("BoxShape3D_8q8dx")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_mgwys")]
+transform = Transform3D(2.4, 0, 0, 0, 2.4, 0, 0, 0, 2.4, 1.90568, 0.898875, 1.41685)

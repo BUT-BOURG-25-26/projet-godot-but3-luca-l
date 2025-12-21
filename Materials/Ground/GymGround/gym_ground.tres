@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dw2plq51qta4x"]
+
+[ext_resource type="Texture2D" uid="uid://xn0g4n53ddyd" path="res://Materials/Ground/GymGround/black-road-texture.jpg" id="1_siag7"]
+
+[resource]
+albedo_color = Color(0.359069, 0.359069, 0.359069, 1)
+albedo_texture = ExtResource("1_siag7")
+metallic_specular = 0.0
+uv1_scale = Vector3(5, 5, 5)

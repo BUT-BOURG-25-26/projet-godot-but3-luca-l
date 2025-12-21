@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cg0avy2hauws0"]
+
+[ext_resource type="Texture2D" uid="uid://bih28jj4f6ixx" path="res://Materials/Ground/Parquet1/360_F_176044944_mUQlC0h0zTeeXutIgBMNSFPtbMPwsc5V.jpg" id="1_vjjq0"]
+
+[resource]
+albedo_color = Color(0.544974, 0.544974, 0.544974, 1)
+albedo_texture = ExtResource("1_vjjq0")
+uv1_scale = Vector3(3, 3, 3)

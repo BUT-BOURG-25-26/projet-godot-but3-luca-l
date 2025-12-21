@@ -1,4 +1,5 @@
 extends Node
+# IMPORTANT : REMPLACER ENSUITE PAR POURCENTAGE
 
 signal signalStatsUpdated
 

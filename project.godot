@@ -26,6 +26,11 @@ PlayerStatManager="*res://Scripts/Manager/PlayerStatManager.gd"
 
 enabled=PackedStringArray("res://addons/virtual_joystick/plugin.cfg")
 
+[gui]
+
+theme/custom="uid://kaxyagbwhk80"
+theme/custom_font="uid://dm3k0wkpbkpcu"
+
 [input]
 
 Up={

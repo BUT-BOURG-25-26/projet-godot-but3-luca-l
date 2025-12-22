@@ -1,0 +1,149 @@
+[gd_scene load_steps=5 format=3 uid="uid://b50qmvho4cnuj"]
+
+[ext_resource type="Script" uid="uid://ctwhssao188b2" path="res://Scripts/UI/PauseMenu.gd" id="1_1bgrl"]
+[ext_resource type="StyleBox" uid="uid://3wb1djtuka2h" path="res://Assets/Style/progressBarBgStyle.tres" id="2_frswm"]
+[ext_resource type="StyleBox" uid="uid://cl7n1v07gyide" path="res://Assets/Style/buttonStyle.tres" id="2_q62v1"]
+[ext_resource type="StyleBox" uid="uid://d0o635fsqw5kd" path="res://Assets/Style/progressBarFillStyle.tres" id="3_4fp4y"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+script = ExtResource("1_1bgrl")
+
+[node name="Control" type="Control" parent="."]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 2
+offset_left = 861.0
+offset_top = 101.0
+offset_right = 1090.0
+offset_bottom = 552.0
+size_flags_horizontal = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label2" type="Label" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Stats :"
+horizontal_alignment = 1
+
+[node name="MeleeDamage" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/MeleeDamage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Melee Damage"
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/PanelContainer/VBoxContainer/MeleeDamage"]
+layout_mode = 2
+theme_override_styles/background = ExtResource("2_frswm")
+theme_override_styles/fill = ExtResource("3_4fp4y")
+
+[node name="RangeDamage" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/RangeDamage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Range Damage"
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/PanelContainer/VBoxContainer/RangeDamage"]
+layout_mode = 2
+theme_override_styles/background = ExtResource("2_frswm")
+theme_override_styles/fill = ExtResource("3_4fp4y")
+
+[node name="AreaDamage" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/AreaDamage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Area Damage"
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/PanelContainer/VBoxContainer/AreaDamage"]
+layout_mode = 2
+theme_override_styles/background = ExtResource("2_frswm")
+theme_override_styles/fill = ExtResource("3_4fp4y")
+
+[node name="MovementSpeed" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/MovementSpeed"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Movement Speed"
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/PanelContainer/VBoxContainer/MovementSpeed"]
+layout_mode = 2
+theme_override_styles/background = ExtResource("2_frswm")
+theme_override_styles/fill = ExtResource("3_4fp4y")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+process_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 2.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="TopButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+process_mode = 2
+custom_minimum_size = Vector2(300, 115)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/focus = ExtResource("2_q62v1")
+theme_override_styles/hover = ExtResource("2_q62v1")
+theme_override_styles/pressed = ExtResource("2_q62v1")
+theme_override_styles/normal = ExtResource("2_q62v1")
+text = "Reprendre"
+
+[node name="MiddleButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+process_mode = 2
+custom_minimum_size = Vector2(300, 115)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/focus = ExtResource("2_q62v1")
+theme_override_styles/hover = ExtResource("2_q62v1")
+theme_override_styles/pressed = ExtResource("2_q62v1")
+theme_override_styles/normal = ExtResource("2_q62v1")
+text = "Restart"
+
+[node name="BottomButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+process_mode = 2
+custom_minimum_size = Vector2(300, 115)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/focus = ExtResource("2_q62v1")
+theme_override_styles/hover = ExtResource("2_q62v1")
+theme_override_styles/pressed = ExtResource("2_q62v1")
+theme_override_styles/normal = ExtResource("2_q62v1")
+text = "Menu"
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/TopButton" to="." method="onResumeButtonPressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MiddleButton" to="." method="onRestartButtonPressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/BottomButton" to="." method="onMenuButtonPressed"]

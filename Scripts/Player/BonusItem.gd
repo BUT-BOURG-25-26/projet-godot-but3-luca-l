@@ -1,7 +1,6 @@
 class_name BonusItem
 extends Area3D
 
-const DESPAWN_SECONDS: float = 20.0
 const SPIN_DEG_PER_SEC: float = 90.0
 
 const POWERUP_SFX_PATH := "res://Assets/Sons/powerUp.mp3"
@@ -28,7 +27,6 @@ func _ready() -> void:
 	currentType = BonusType.values().pick_random()
 	_update_visual_for_type()
 	body_entered.connect(_on_body_entered)
-	get_tree().create_timer(DESPAWN_SECONDS).timeout.connect(_on_despawn_timeout)
 	set_process(true)
 
 
@@ -39,11 +37,6 @@ func _process(delta: float) -> void:
 		return
 	_current_visual.rotate_y(deg_to_rad(SPIN_DEG_PER_SEC) * delta)
 
-
-func _on_despawn_timeout() -> void:
-	if _picked_up:
-		return
-	queue_free()
 
 func _update_visual_for_type() -> void:
 	_hide_all_visuals()

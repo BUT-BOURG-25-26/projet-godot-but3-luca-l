@@ -314,6 +314,9 @@ func _die() -> void:
 	if randf() < drop_chance:
 		spawn_bonus()
 
+	# Count the kill immediately so score/progression update even while the death animation plays.
+	GameManager.UpdateScore(1)
+
 	_death_token += 1
 	var token := _death_token
 

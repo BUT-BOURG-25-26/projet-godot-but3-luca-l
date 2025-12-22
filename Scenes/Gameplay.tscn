@@ -1,26 +1,17 @@
 [gd_scene load_steps=16 format=3 uid="uid://dmjbg6r7aoiuu"]
 
 [ext_resource type="PackedScene" uid="uid://c4orrak2hn07y" path="res://Scenes/Manager/EnnemySpawner.tscn" id="1_u8j7u"]
-[ext_resource type="PackedScene" uid="uid://c24rnkrg4u6xp" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
-[ext_resource type="PackedScene" uid="uid://c6xfhrkl1cqr7" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
-[ext_resource type="PackedScene" uid="uid://dya16vgcd0f5e" path="res://Scenes/Enemy/RangeEnemy.tscn" id="2_xwjbm"]
-[ext_resource type="PackedScene" uid="uid://q3eggwev5rag" path="res://Scenes/Enemy/BossEnemy.tscn" id="3_rhmiw"]
-[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
-[ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
-[ext_resource type="PackedScene" uid="uid://bj6iljmlp1txu" path="res://Scenes/UI/GameUI.tscn" id="5_cfeic"]
-[ext_resource type="Script" uid="uid://b36yw3gk2g236" path="res://Scripts/Map/InfiniteMapGenerator.gd" id="5_uotjs"]
-[ext_resource type="PackedScene" uid="uid://b50qmvho4cnuj" path="res://Scenes/UI/pauseMenu.tscn" id="5_w5l26"]
-[ext_resource type="PackedScene" uid="uid://cacea55pfqot5" path="res://Scenes/Maps/Map1.tscn" id="6_vu60g"]
-[ext_resource type="PackedScene" uid="uid://pg8x4qt3byri" path="res://Scenes/Maps/Map2.tscn" id="7_vu60g"]
 [ext_resource type="PackedScene" uid="uid://dy534entc17s" path="res://Scenes/Player/Player.tscn" id="1_yijg0"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/MenuLevelUp.tscn" id="2_u8j7u"]
-[ext_resource type="Script" uid="uid://b36yw3gk2g236" path="res://Scripts/Map/InfiniteMapGenerator.gd" id="3_rhmiw"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_tdndw"]
 [ext_resource type="Script" uid="uid://bivomj2qpguk3" path="res://Scripts/Manager/Camera.gd" id="4_ovofm"]
 [ext_resource type="PackedScene" uid="uid://cacea55pfqot5" path="res://Scenes/Maps/Map1.tscn" id="4_uotjs"]
+[ext_resource type="PackedScene" uid="uid://bj6iljmlp1txu" path="res://Scenes/UI/GameUI.tscn" id="5_cfeic"]
+[ext_resource type="Script" uid="uid://b36yw3gk2g236" path="res://Scripts/Map/InfiniteMapGenerator.gd" id="5_uotjs"]
 [ext_resource type="PackedScene" uid="uid://pg8x4qt3byri" path="res://Scenes/Maps/Map2.tscn" id="5_vu60g"]
-[ext_resource type="Script" path="res://Scripts/Manager/BackgroundMusic.gd" id="6_music_script"]
-[ext_resource type="AudioStream" path="res://Assets/Sons/Gym Grinder.mp3" id="7_music_stream"]
+[ext_resource type="PackedScene" uid="uid://b50qmvho4cnuj" path="res://Scenes/UI/pauseMenu.tscn" id="5_w5l26"]
+[ext_resource type="Script" uid="uid://ctjf4mw7afdfe" path="res://Scripts/Manager/BackgroundMusic.gd" id="6_music_script"]
+[ext_resource type="AudioStream" uid="uid://blofrxqdm36se" path="res://Assets/Sons/Gym Grinder.mp3" id="7_music_stream"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yijg0"]
 
@@ -36,11 +27,10 @@ tonemap_mode = 2
 [node name="GameplayScene" type="Node3D"]
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_music_stream")
-script = ExtResource("6_music_script")
-autoplay = false
-volume_db = -8.0
 process_mode = 3
+stream = ExtResource("7_music_stream")
+volume_db = -8.0
+script = ExtResource("6_music_script")
 
 [node name="EnnemySpawner" parent="." groups=["EnemySpawner"] instance=ExtResource("1_u8j7u")]
 
@@ -53,7 +43,7 @@ process_mode = 3
 [node name="GameUi" parent="UI" groups=["GameUI"] instance=ExtResource("5_cfeic")]
 
 [node name="Map" type="Node3D" parent="."]
-script = ExtResource("3_rhmiw")
+script = ExtResource("5_uotjs")
 chunk_scenes = Array[PackedScene]([ExtResource("4_uotjs"), ExtResource("5_vu60g")])
 chunk_size = 25.0
 

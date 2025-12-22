@@ -1,5 +1,7 @@
 extends Node
 
+signal game_level_changed(new_level: int)
+
 var time_elapsed: float = 0.0
 var score: int = 0
 var enemyKilledInCurrentLevel: int = 0
@@ -47,6 +49,7 @@ func EndOfLevel() -> void:
 
 func StartNextLevel() -> void:
 	gameLevel += 1
+	game_level_changed.emit(gameLevel)
 	enemyKilledInCurrentLevel = 0
 	enemySpawner.currentEnemyNumber = 0
 	enemySpawner.numberOfBoss = 0
@@ -85,6 +88,7 @@ func UpdateDifficulty():
 func resetData() -> void:
 	score = 0
 	gameLevel = 1
+	game_level_changed.emit(gameLevel)
 	enemyKilledInCurrentLevel = 0
 	time_elapsed = 0.0
 	gameOver = false

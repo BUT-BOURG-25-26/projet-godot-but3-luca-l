@@ -1,15 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbon1xdxb2bha"]
+[gd_scene load_steps=8 format=3 uid="uid://cbon1xdxb2bha"]
 
 [ext_resource type="Script" uid="uid://jc2c1r1ermlw" path="res://Scripts/UI/StartMenu.gd" id="1_c5u6n"]
+[ext_resource type="Script" path="res://Scripts/UI/MenuMusic.gd" id="1_menu_music_script"]
 [ext_resource type="StyleBox" uid="uid://cl7n1v07gyide" path="res://Assets/Style/buttonStyle.tres" id="2_ao12g"]
 [ext_resource type="Texture2D" uid="uid://3lrbnsebppvc" path="res://Assets/Style/Background.png" id="3_6yegp"]
 [ext_resource type="Shader" uid="uid://dnbwi7mdt27sy" path="res://Scripts/UI/startMenu.gdshader" id="3_k1tpf"]
+[ext_resource type="AudioStream" path="res://Assets/Sons/Iron Pulse Protocol.mp3" id="4_menu_music_stream"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k1tpf"]
 shader = ExtResource("3_k1tpf")
 
 [node name="StartMenu" type="CanvasLayer"]
 script = ExtResource("1_c5u6n")
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("4_menu_music_stream")
+script = ExtResource("1_menu_music_script")
 
 [node name="Control" type="Control" parent="."]
 process_mode = 2

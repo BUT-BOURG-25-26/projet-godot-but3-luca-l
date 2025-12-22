@@ -34,6 +34,7 @@ func _die() -> void:
 	healthbar.update(currentPv)
 	if randf() < drop_chance:
 		spawn_bonus()
+	GameManager.UpdateScore(1)
 	queue_free()
 
 # Overide a chaque type d'enemy

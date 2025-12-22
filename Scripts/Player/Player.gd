@@ -47,6 +47,10 @@ var areaAttack: Node3D
 var animation_controller: PlayerAnimationController
 const PUSH_UP_ACTION := "PushUp"
 
+const DEATH_ANIM: StringName = &"Mort"
+const DEATH_MENU_FALLBACK_SEC: float = 1.5
+var _death_sequence_started: bool = false
+
 const NUKE_EMOTE_ANIM: StringName = &"Fortnite_dance"
 const NUKE_EMOTE_SPEED: float = 1.5
 var _nuke_emote_active: bool = false
@@ -133,17 +137,57 @@ func SetAttackIntervals():
 func TakeDammage(dammage: int) -> void:
 	if _nuke_emote_active:
 		return
+	if _death_sequence_started:
+		return
 	if currentPv - dammage > 0:
 		currentPv -= dammage
 		healthbar.update(currentPv)
 	else:
 		currentPv = 0
 		healthbar.update(currentPv)
-		GameManager.gameOver = true
+		_start_death_sequence()
 	return
+
+
+func _start_death_sequence() -> void:
+	if _death_sequence_started:
+		return
+	_death_sequence_started = true
+
+	# Stop any gameplay actions immediately.
+	if is_instance_valid(meleeAttackTimer):
+		meleeAttackTimer.stop()
+	if is_instance_valid(rangeAttackTimer):
+		rangeAttackTimer.stop()
+	if is_instance_valid(areaAttack) and ("attackTimer" in areaAttack) and is_instance_valid(areaAttack.attackTimer):
+		areaAttack.attackTimer.stop()
+
+	velocity = Vector3.ZERO
+
+	# Prevent other animations from overriding the death animation.
+	if animation_controller:
+		animation_controller.set_animation_lock(true)
+
+	var wait_sec := DEATH_MENU_FALLBACK_SEC
+	if anim_player != null and anim_player.has_animation(DEATH_ANIM):
+		anim_player.speed_scale = 1.0
+		var anim: Animation = anim_player.get_animation(DEATH_ANIM)
+		if anim != null:
+			anim.loop_mode = Animation.LOOP_NONE
+			wait_sec = maxf(0.1, anim.length)
+		anim_player.stop()
+		anim_player.play(DEATH_ANIM)
+		anim_player.seek(0.0, true)
+
+	# Only show the Game Over menu after the death animation.
+	get_tree().create_timer(wait_sec).timeout.connect(func() -> void:
+		GameManager.gameOver = true
+	)
 
 func meleeAttack() -> void:
 	if _nuke_emote_active:
+		return
+	if _death_sequence_started:
 		return
 	if animation_controller and (animation_controller.is_melee_attack_active() or animation_controller.is_pushup_active()):
 		return
@@ -170,6 +214,8 @@ func meleeAttack() -> void:
 
 
 func rangeAttack() -> void:
+	if _death_sequence_started:
+		return
 	var rangeAttack = rangeAttackScene.instantiate()
 	get_parent().add_child(rangeAttack)
 	var forward := (-global_transform.basis.z).normalized()
@@ -184,6 +230,15 @@ func rangeAttack() -> void:
 	
 
 func _physics_process(delta: float) -> void:
+	if _death_sequence_started:
+		# Keep gravity but prevent player-driven actions.
+		move_inputs = Vector2.ZERO
+		if !is_on_floor():
+			velocity.y = get_gravity().y
+		velocity.x = move_toward(velocity.x, 0, moveSpeed)
+		velocity.z = move_toward(velocity.z, 0, moveSpeed)
+		move_and_slide()
+		return
 	if _nuke_emote_active:
 		move_inputs = Vector2.ZERO
 		# Keep gravity, but prevent player-driven movement.

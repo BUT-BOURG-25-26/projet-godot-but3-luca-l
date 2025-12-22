@@ -47,13 +47,14 @@ func EnableRangeSpawn():
 
 func SpawnEnnemy(ennemyToSpawn: PackedScene) -> void:
 	if currentEnemyNumber >= spawnLimit:
-		if numberOfBoss < GameManager.gameLevel / 10:
-			numberOfBoss += 1
-			var boss = bossEnemy.instantiate()
-			boss.add_to_group("Enemy")
-			add_child(boss)
-			SpawnPosition(boss)
-			return
+		if GameManager.gameLevel % 5 == 0:
+			if numberOfBoss < GameManager.gameLevel / 10:
+				numberOfBoss += 1
+				var boss = bossEnemy.instantiate()
+				boss.add_to_group("Enemy")
+				add_child(boss)
+				SpawnPosition(boss)
+				return
 		GameManager.EndOfLevel()
 		return
 	currentEnemyNumber += 1

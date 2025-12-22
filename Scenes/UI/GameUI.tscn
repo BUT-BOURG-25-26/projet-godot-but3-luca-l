@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bj6iljmlp1txu"]
+[gd_scene load_steps=8 format=3 uid="uid://bj6iljmlp1txu"]
 
 [ext_resource type="Script" uid="uid://cwudtmh57svum" path="res://Scripts/UI/GameUI.gd" id="1_13cgw"]
 [ext_resource type="StyleBox" uid="uid://3wb1djtuka2h" path="res://Assets/Style/progressBarBgStyle.tres" id="2_71wt1"]
 [ext_resource type="StyleBox" uid="uid://d0o635fsqw5kd" path="res://Assets/Style/progressBarFillStyle.tres" id="3_xkiwj"]
 [ext_resource type="Texture2D" uid="uid://cfb7x0wjit5o0" path="res://Assets/Style/ParameterIcon.png" id="4_tog36"]
+[ext_resource type="Texture2D" uid="uid://bpkci5cqdrhf2" path="res://Assets/Style/MeleeIcon.png" id="5_intyv"]
+[ext_resource type="Texture2D" uid="uid://3hyhk5rmf0qm" path="res://Assets/Style/RangeIcon.png" id="6_4284l"]
+[ext_resource type="Texture2D" uid="uid://dh3ogkgxtf5bs" path="res://Assets/Style/AreaIcon.png" id="7_sinwf"]
 
 [node name="GameUi" type="CanvasLayer"]
 script = ExtResource("1_13cgw")
@@ -80,5 +83,29 @@ text = "Score :"
 [node name="Level" type="Label" parent="Control/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Level : "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_constants/separation = 10
+
+[node name="MeleeIcon" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("5_intyv")
+expand_mode = 1
+
+[node name="RangeIcon" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("6_4284l")
+expand_mode = 1
+
+[node name="AreaIcon" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("7_sinwf")
+expand_mode = 1
 
 [connection signal="pressed" from="TextureButton" to="." method="onOptionButtonPressed"]

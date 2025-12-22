@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbon1xdxb2bha"]
+[gd_scene load_steps=6 format=3 uid="uid://cbon1xdxb2bha"]
 
 [ext_resource type="Script" uid="uid://jc2c1r1ermlw" path="res://Scripts/UI/StartMenu.gd" id="1_c5u6n"]
 [ext_resource type="StyleBox" uid="uid://cl7n1v07gyide" path="res://Assets/Style/buttonStyle.tres" id="2_ao12g"]
+[ext_resource type="Texture2D" uid="uid://3lrbnsebppvc" path="res://Assets/Style/Background.png" id="3_6yegp"]
+[ext_resource type="Shader" uid="uid://dnbwi7mdt27sy" path="res://Scripts/UI/startMenu.gdshader" id="3_k1tpf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k1tpf"]
+shader = ExtResource("3_k1tpf")
 
 [node name="StartMenu" type="CanvasLayer"]
 script = ExtResource("1_c5u6n")
@@ -16,12 +21,24 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="TextureRect" type="TextureRect" parent="Control"]
+material = SubResource("ShaderMaterial_k1tpf")
+clip_contents = true
+offset_right = 1154.0
+offset_bottom = 655.0
+texture = ExtResource("3_6yegp")
+expand_mode = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 process_mode = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 212.0
+offset_right = 3.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 64
@@ -35,7 +52,7 @@ theme_override_constants/separation = 50
 alignment = 1
 
 [node name="TopButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(400, 150)
+custom_minimum_size = Vector2(375, 115)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -47,7 +64,7 @@ theme_override_styles/normal = ExtResource("2_ao12g")
 text = "Play"
 
 [node name="BottomButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(400, 150)
+custom_minimum_size = Vector2(375, 115)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 25

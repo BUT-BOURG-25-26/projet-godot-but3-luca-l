@@ -59,7 +59,7 @@ func resetData():
 	
 	rangeCurrentHealth = 2
 	rangeCurrentMovementSpeed = 2
-	rangeCurrentAttackTiming = 1.5
+	rangeCurrentAttackTiming = 2
 	rangeCurrentDammage = 1
 	rangeCurrentProjectilSpeed = 5
 	

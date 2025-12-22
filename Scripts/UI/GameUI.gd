@@ -8,8 +8,14 @@ var pauseMenu: PauseMenu
 @onready var scoreLabel: Label = $Control/MarginContainer/VBoxContainer/VBoxContainer/Score
 @onready var optionButton: TextureButton = $TextureButton
 
+@onready var meleeIcon: TextureRect = $Control/MarginContainer/VBoxContainer/HBoxContainer/MeleeIcon
+@onready var rangeIcon: TextureRect = $Control/MarginContainer/VBoxContainer/HBoxContainer/RangeIcon
+@onready var AreaIcon: TextureRect = $Control/MarginContainer/VBoxContainer/HBoxContainer/AreaIcon
+
 func _ready() -> void:
 	pauseMenu = get_tree().get_first_node_in_group("PauseMenu")
+	rangeIcon.visible = false
+	AreaIcon.visible = false
 	
 func UpdateLevelProgression(newProgression: int, newMaxValue: int):
 	levelProgression.max_value = newMaxValue
@@ -33,3 +39,11 @@ func UpdateLevel(newLevel: int):
 func onOptionButtonPressed() -> void:
 	if pauseMenu:
 		pauseMenu.open_pause_menu()
+	
+func DisplayRangeIcon():
+	if rangeIcon.visible == false:
+		rangeIcon.visible = true
+	
+func DisplayAreeIcon():
+	if AreaIcon.visible == false:
+		AreaIcon.visible = true
